@@ -10,6 +10,59 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('Video player would open here. Implement with your preferred video solution (YouTube, Vimeo, or custom player).');
     });
     
+    // Reel videos functionality
+    const reelVideos = document.querySelectorAll('.reel-video');
+    const reelPlayButtons = document.querySelectorAll('.reel-play-button');
+    
+    // Load video when src is set
+    reelVideos.forEach(video => {
+        const dataSrc = video.getAttribute('data-src');
+        if (dataSrc) {
+            video.src = dataSrc;
+            video.classList.add('loaded');
+            video.load();
+        }
+    });
+    
+    // Play/pause video on click
+    reelPlayButtons.forEach((button, index) => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const video = reelVideos[index];
+            const overlay = button.closest('.video-overlay');
+            
+            if (video.src && video.src !== window.location.href) {
+                if (video.paused) {
+                    // Pause all other videos
+                    reelVideos.forEach((v, i) => {
+                        if (i !== index && !v.paused) {
+                            v.pause();
+                            const otherOverlay = reelPlayButtons[i].closest('.video-overlay');
+                            otherOverlay.style.opacity = '1';
+                        }
+                    });
+                    
+                    video.play();
+                    overlay.style.opacity = '0';
+                } else {
+                    video.pause();
+                    overlay.style.opacity = '1';
+                }
+            } else {
+                // No video source set yet
+                alert('Video URL will be added soon. This is a placeholder for reel-style video testimonial.');
+            }
+        });
+    });
+    
+    // Show overlay when video ends
+    reelVideos.forEach((video, index) => {
+        video.addEventListener('ended', function() {
+            const overlay = reelPlayButtons[index].closest('.video-overlay');
+            overlay.style.opacity = '1';
+        });
+    });
+    
     // Smooth scroll for CTA button (if you add form section later)
     const ctaButton = document.querySelector('.cta-button');
     ctaButton.addEventListener('click', function() {

@@ -34,15 +34,15 @@ body {
     position: absolute;
     width: 800px;
     height: 800px;
-    left: -350px;
+    left: -200px;
     top: 50%;
     transform: translateY(-50%);
     background-image: url('resources/sol-symbol.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    filter: blur(60px);
-    opacity: 0.8;
+    filter: blur(30px);
+    opacity: 0.9;
     z-index: 1;
 }
 
@@ -202,12 +202,65 @@ body {
     text-align: center;
 }
 
-.testimonial-image {
+.testimonial-video {
+    position: relative;
     width: 100%;
-    aspect-ratio: 3/4;
+    aspect-ratio: 9/16;
     background-color: #e0e0e0;
     border-radius: 12px;
     margin-bottom: 1.5rem;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.reel-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.reel-video.loaded {
+    display: block;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease;
+}
+
+.testimonial-video:hover .video-overlay {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.reel-play-button {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.reel-play-button:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 1);
+}
+
+.reel-play-button svg {
+    margin-left: 3px;
 }
 
 .testimonial-name {
@@ -230,25 +283,33 @@ body {
     border-top: 1px solid #e9ecef;
 }
 
-.footer-content {
-    text-align: center;
-    font-size: 1rem;
-    color: #666;
+.footer-social {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
 }
 
-.footer-link {
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
     color: #12326E;
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    border-radius: 50%;
 }
 
-.footer-link:hover {
+.social-link:hover {
     color: #E25100;
+    transform: translateY(-3px);
 }
 
-.footer-separator {
-    margin: 0 1rem;
-    color: #ccc;
+.social-link svg {
+    width: 24px;
+    height: 24px;
 }
 
 /* Responsive Design */
@@ -265,11 +326,11 @@ body {
     .sun-element {
         width: 300px;
         height: 300px;
-        left: -120px;
-        top: -50px;
+        left: -80px;
+        top: -80px;
         transform: none;
-        filter: blur(40px);
-        opacity: 0.8;
+        filter: blur(25px);
+        opacity: 0.9;
     }
     
     .logo {
@@ -357,8 +418,18 @@ body {
         padding: 2rem 0;
     }
     
-    .footer-content {
-        font-size: 0.875rem;
+    .footer-social {
+        gap: 1.5rem;
+    }
+    
+    .social-link {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .social-link svg {
+        width: 20px;
+        height: 20px;
     }
 }
 
