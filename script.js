@@ -1,89 +1,150 @@
 // Video player functionality
 document.addEventListener('DOMContentLoaded', function() {
-    const playButton = document.querySelector('.play-button');
-    const videoPlayer = document.querySelector('.video-player');
+    // Main VSL Video Player
+    const video = document.getElementById('vslVideo');
     
-    // Play button click handler
-    playButton.addEventListener('click', function() {
-        // Here you would implement the actual video player
-        // For now, we'll just show a placeholder behavior
-        alert('Video player would open here. Implement with your preferred video solution (YouTube, Vimeo, or custom player).');
-    });
+    // Set initial thumbnail to 3:13 (193 seconds)
+    if (video) {
+        video.addEventListener('loadedmetadata', function() {
+            video.currentTime = 193;
+        });
+        
+        // Reset to beginning when user plays the video
+        video.addEventListener('play', function() {
+            if (video.currentTime === 193 && !video.hasAttribute('data-played')) {
+                video.currentTime = 0;
+                video.setAttribute('data-played', 'true');
+            }
+        });
+    }
     
-    // Reel videos functionality
-    const reelVideos = document.querySelectorAll('.reel-video');
-    const reelPlayButtons = document.querySelectorAll('.reel-play-button');
+    // Carousel functionality
+    const carouselTrack = document.querySelector('.carousel-track');
+    const carouselCards = document.querySelectorAll('.testimonial-card');
+    const prevButton = document.querySelector('.carousel-button-prev');
+    const nextButton = document.querySelector('.carousel-button-next');
     
-    // Load video when src is set
-    reelVideos.forEach(video => {
-        const dataSrc = video.getAttribute('data-src');
-        if (dataSrc) {
-            video.src = dataSrc;
-            video.classList.add('loaded');
-            video.load();
+    let currentIndex = 0;
+    let cardsPerView = window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 2 : 3;
+    const totalCards = carouselCards.length;
+    const maxIndex = Math.max(0, totalCards - cardsPerView);
+    
+    // Update carousel position
+    function updateCarousel() {
+        const cardWidth = carouselCards[0].offsetWidth;
+        const gap = window.innerWidth <= 768 ? 16 : 32; // 1rem on mobile, 2rem on desktop
+        const offset = -currentIndex * (cardWidth + gap);
+        carouselTrack.style.transform = `translateX(${offset}px)`;
+        
+        // Update button states
+        prevButton.style.opacity = currentIndex === 0 ? '0.5' : '1';
+        prevButton.style.cursor = currentIndex === 0 ? 'not-allowed' : 'pointer';
+        nextButton.style.opacity = currentIndex === maxIndex ? '0.5' : '1';
+        nextButton.style.cursor = currentIndex === maxIndex ? 'not-allowed' : 'pointer';
+    }
+    
+    // Previous button click
+    prevButton.addEventListener('click', function() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
         }
     });
     
-    // Play/pause video on click
-    reelPlayButtons.forEach((button, index) => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const video = reelVideos[index];
-            const overlay = button.closest('.video-overlay');
-            
-            if (video.src && video.src !== window.location.href) {
-                if (video.paused) {
-                    // Pause all other videos
-                    reelVideos.forEach((v, i) => {
-                        if (i !== index && !v.paused) {
-                            v.pause();
-                            const otherOverlay = reelPlayButtons[i].closest('.video-overlay');
-                            otherOverlay.style.opacity = '1';
-                        }
-                    });
-                    
-                    video.play();
-                    overlay.style.opacity = '0';
-                } else {
-                    video.pause();
-                    overlay.style.opacity = '1';
+    // Next button click
+    nextButton.addEventListener('click', function() {
+        if (currentIndex < maxIndex) {
+            currentIndex++;
+            updateCarousel();
+        }
+    });
+    
+    // Handle window resize
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            const newCardsPerView = window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 2 : 3;
+            if (newCardsPerView !== cardsPerView) {
+                cardsPerView = newCardsPerView;
+                const newMaxIndex = Math.max(0, totalCards - cardsPerView);
+                if (currentIndex > newMaxIndex) {
+                    currentIndex = newMaxIndex;
                 }
-            } else {
-                // No video source set yet
-                alert('Video URL will be added soon. This is a placeholder for reel-style video testimonial.');
+                updateCarousel();
             }
-        });
+        }, 250);
     });
     
-    // Show overlay when video ends
-    reelVideos.forEach((video, index) => {
-        video.addEventListener('ended', function() {
-            const overlay = reelPlayButtons[index].closest('.video-overlay');
-            overlay.style.opacity = '1';
-        });
-    });
+    // Initialize carousel
+    updateCarousel();
     
-    // Smooth scroll for CTA button (if you add form section later)
+    // Form modal functionality
     const ctaButton = document.querySelector('.cta-button');
+    const formOverlay = document.getElementById('formOverlay');
+    const formClose = document.getElementById('formClose');
+    const registrationForm = document.getElementById('registrationForm');
+    
+    // Open form when CTA button is clicked
     ctaButton.addEventListener('click', function() {
-        // Implement scroll to form or open modal
-        alert('Formulário de cadastro seria aberto aqui.');
+        formOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
     });
     
-    // Add hover effect to testimonial cards
-    const testimonialCards = document.querySelectorAll('.testimonial-card');
-    testimonialCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px)';
-            this.style.transition = 'transform 0.3s ease';
-        });
+    // Close form when close button is clicked
+    formClose.addEventListener('click', function() {
+        formOverlay.classList.remove('active');
+        document.body.style.overflow = ''; // Re-enable scrolling
+    });
+    
+    // Close form when clicking outside the form container
+    formOverlay.addEventListener('click', function(e) {
+        if (e.target === formOverlay) {
+            formOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+    
+    // Handle form submission
+    registrationForm.addEventListener('submit', function(e) {
+        e.preventDefault();
         
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
+        // Get form data
+        const formData = {
+            fullname: document.getElementById('fullname').value,
+            email: document.getElementById('email').value,
+            whatsapp: document.getElementById('whatsapp').value
+        };
+        
+        // For now, just log the data and show a success message
+        console.log('Form submitted:', formData);
+        
+        // Show success message (you can customize this)
+        alert('Inscrição realizada com sucesso! Você receberá o convite em breve.');
+        
+        // Reset form and close modal
+        registrationForm.reset();
+        formOverlay.classList.remove('active');
+        document.body.style.overflow = '';
     });
     
-    // Lazy load animation for testimonials
+    // Format WhatsApp input
+    const whatsappInput = document.getElementById('whatsapp');
+    whatsappInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length <= 11) {
+            if (value.length > 6) {
+                value = `(${value.slice(0,2)}) ${value.slice(2,7)}-${value.slice(7)}`;
+            } else if (value.length > 2) {
+                value = `(${value.slice(0,2)}) ${value.slice(2)}`;
+            } else if (value.length > 0) {
+                value = `(${value}`;
+            }
+        }
+        e.target.value = value;
+    });
+    
+    // Lazy load animation for carousel
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -100px 0px'
@@ -98,11 +159,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, observerOptions);
     
-    // Set initial state for testimonial cards
-    testimonialCards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = `all 0.6s ease ${index * 0.1}s`;
-        observer.observe(card);
-    });
+    // Set initial state for carousel container
+    const carouselContainer = document.querySelector('.carousel-container');
+    carouselContainer.style.opacity = '0';
+    carouselContainer.style.transform = 'translateY(30px)';
+    carouselContainer.style.transition = 'all 0.6s ease';
+    observer.observe(carouselContainer);
 });
