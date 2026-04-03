@@ -182,13 +182,14 @@ export default async function handler(request: Request, context: Context) {
     const password = form.get("password");
 
     if (password === PASSWORD) {
-      const response = await context.next();
-      const newResponse = new Response(response.body, response);
-      newResponse.headers.set(
-        "set-cookie",
-        `${COOKIE_NAME}=${TOKEN}; Path=/interno; HttpOnly; SameSite=Lax; Max-Age=86400`
-      );
-      return newResponse;
+      const url = new URL(request.url);
+      return new Response(null, {
+        status: 302,
+        headers: {
+          Location: url.pathname,
+          "Set-Cookie": `${COOKIE_NAME}=${TOKEN}; Path=/interno; HttpOnly; SameSite=Lax; Max-Age=86400`,
+        },
+      });
     }
 
     return new Response(getLoginPage(true), {
