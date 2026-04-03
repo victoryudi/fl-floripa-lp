@@ -1,0 +1,6 @@
+[build]
+  publish = "."
+
+[[edge_functions]]
+  path = "/interno/*"
+  function = "auth-interno"
