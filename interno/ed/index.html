@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comissão de Estratégias Digitais · Logosofia</title>
+    <link rel="icon" type="image/png" href="/resources/icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --brand-blue: #12326e;
+            --brand-blue-soft: #596f99;
+            --brand-blue-muted: #677ba1;
+            --brand-orange: #e25100;
+            --brand-orange-bright: #ff6a1f;
+            --brand-sun: #ffb900;
+            --surface: #fffdfb;
+            --surface-soft: #f8f8f8;
+            --surface-card: #ffffff;
+            --line: #dfe6ee;
+            --shadow-soft: 0 22px 50px rgba(18, 50, 110, 0.08);
+            --shadow-card: 0 18px 38px rgba(18, 50, 110, 0.08);
+            --radius-pill: 30px;
+            --radius-xl: 28px;
+            --radius-lg: 22px;
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+            --page-gutter: clamp(1rem, 1vw + 0.8rem, 2rem);
+            --content-max: 1320px;
+        }
+
+        * { box-sizing: border-box; }
+
+        html {
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: var(--surface);
+        }
+
+        body {
+            margin: 0;
+            min-height: 100dvh;
+            font-family: "Source Sans Pro", sans-serif;
+            color: var(--brand-blue);
+            background: var(--surface);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        img, svg { display: block; max-width: 100%; }
+
+        a { color: inherit; text-decoration: none; }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            background: rgba(255, 253, 251, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 4px solid var(--brand-blue);
+            border-bottom: 1px solid rgba(18, 50, 110, 0.08);
+        }
+
+        .site-header-inner {
+            width: min(100%, var(--content-max));
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            min-height: 5.4rem;
+            padding: 0 var(--page-gutter);
+        }
+
+        .site-brand img {
+            width: clamp(7.6rem, 9vw, 8.8rem);
+            height: auto;
+            filter: brightness(0) saturate(100%) invert(15%) sepia(55%) saturate(1677%) hue-rotate(197deg) brightness(93%) contrast(93%);
+        }
+
+        .page-shell {
+            position: relative;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-shell::before {
+            content: "";
+            position: absolute;
+            top: -2rem;
+            left: -3.9rem;
+            width: 30.5rem;
+            height: 30.5rem;
+            background: url("/resources/sol-symbol.png") center/cover no-repeat;
+            opacity: 1;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(3rem, 6vw, 5rem) var(--page-gutter);
+        }
+
+        .hub {
+            width: min(100%, 780px);
+            display: grid;
+            gap: clamp(2rem, 4vw, 2.8rem);
+            justify-items: center;
+            text-align: center;
+            animation: rise-in 0.9s var(--ease) both;
+        }
+
+        @keyframes rise-in {
+            from { opacity: 0; transform: translate3d(0, 1.4rem, 0); }
+            to { opacity: 1; transform: translate3d(0, 0, 0); }
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--brand-blue-soft);
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 1.8rem;
+            height: 1px;
+            background: currentColor;
+            opacity: 0.5;
+        }
+
+        .hub-title {
+            margin: 0;
+            font-size: clamp(2.2rem, 4.8vw, 3.9rem);
+            line-height: 1.05;
+            letter-spacing: -0.035em;
+            font-weight: 900;
+            color: var(--brand-blue);
+            text-wrap: balance;
+        }
+
+        .hub-title::after {
+            content: "";
+            display: block;
+            width: 4.5rem;
+            height: 3px;
+            margin: 1.1rem auto 0;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--brand-orange) 0%, var(--brand-sun) 100%);
+        }
+
+        .hub-actions {
+            display: grid;
+            gap: 1rem;
+            width: min(100%, 480px);
+        }
+
+        .hub-button {
+            position: relative;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 1.1rem;
+            padding: 1.15rem 1.5rem;
+            border-radius: var(--radius-lg);
+            background: var(--surface-card);
+            border: 1px solid rgba(18, 50, 110, 0.1);
+            box-shadow: var(--shadow-card);
+            color: var(--brand-blue);
+            text-align: left;
+            transition:
+                transform 0.28s var(--ease),
+                box-shadow 0.28s var(--ease),
+                border-color 0.28s var(--ease);
+        }
+
+        .hub-button:hover,
+        .hub-button:focus-visible {
+            transform: translate3d(0, -3px, 0);
+            box-shadow: 0 26px 46px rgba(18, 50, 110, 0.12);
+            border-color: rgba(226, 81, 0, 0.35);
+            outline: none;
+        }
+
+        .hub-button:focus-visible {
+            outline: 2px solid rgba(18, 50, 110, 0.22);
+            outline-offset: 3px;
+        }
+
+        .hub-icon {
+            width: 2.75rem;
+            height: 2.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(226, 81, 0, 0.1) 0%, rgba(255, 185, 0, 0.18) 100%);
+            color: var(--brand-orange);
+            flex-shrink: 0;
+        }
+
+        .hub-icon svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        .hub-body {
+            display: grid;
+            gap: 0.18rem;
+            min-width: 0;
+        }
+
+        .hub-label {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: var(--brand-blue);
+        }
+
+        .hub-hint {
+            font-size: 0.86rem;
+            font-weight: 400;
+            color: var(--brand-blue-muted);
+            line-height: 1.35;
+        }
+
+        .hub-arrow {
+            width: 2rem;
+            height: 2rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: var(--brand-blue-muted);
+            transition: transform 0.28s var(--ease), color 0.28s var(--ease);
+            flex-shrink: 0;
+        }
+
+        .hub-button:hover .hub-arrow,
+        .hub-button:focus-visible .hub-arrow {
+            transform: translate3d(3px, 0, 0);
+            color: var(--brand-orange);
+        }
+
+        .hub-arrow svg {
+            width: 1.1rem;
+            height: 1.1rem;
+        }
+
+        .hub-note {
+            max-width: 34rem;
+            font-size: 0.84rem;
+            line-height: 1.55;
+            color: var(--brand-blue-muted);
+        }
+
+        .hub-note strong {
+            color: var(--brand-blue);
+            font-weight: 700;
+        }
+
+        .footer {
+            position: relative;
+            z-index: 1;
+            background: var(--surface-soft);
+            border-top: 1px solid var(--line);
+            padding: 1.6rem var(--page-gutter);
+        }
+
+        .footer-inner {
+            width: min(100%, var(--content-max));
+            margin: 0 auto;
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--brand-blue-muted);
+            letter-spacing: 0.04em;
+        }
+
+        @media (max-width: 560px) {
+            .hub-button {
+                grid-template-columns: auto 1fr;
+                gap: 0.9rem;
+                padding: 1rem 1.1rem;
+            }
+
+            .hub-arrow { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-brand" href="/">
+                <img src="/resources/logo.png" alt="Logosofia">
+            </a>
+        </div>
+    </header>
+
+    <div class="page-shell">
+        <main>
+            <section class="hub">
+                <span class="eyebrow">Área interna</span>
+                <h1 class="hub-title">Comissão de Estratégias Digitais</h1>
+
+                <nav class="hub-actions" aria-label="Recursos da comissão">
+                    <a class="hub-button" href="/interno/ed/apresentacoes/">
+                        <span class="hub-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="13" rx="2"></rect>
+                                <path d="M8 21h8"></path>
+                                <path d="M12 17v4"></path>
+                            </svg>
+                        </span>
+                        <span class="hub-body">
+                            <span class="hub-label">Apresentação</span>
+                            <span class="hub-hint">Da órbita externa à atmosfera</span>
+                        </span>
+                        <span class="hub-arrow" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14"></path>
+                                <path d="M13 5l7 7-7 7"></path>
+                            </svg>
+                        </span>
+                    </a>
+
+                    <a class="hub-button" href="https://docs.google.com/document/d/1dmMJEbAzUjw6sveMWl_L6pBFy_vYiULdZILKQKUn-kc/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
+                        <span class="hub-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <path d="M14 2v6h6"></path>
+                                <path d="M9 13h6"></path>
+                                <path d="M9 17h6"></path>
+                            </svg>
+                        </span>
+                        <span class="hub-body">
+                            <span class="hub-label">Pitch</span>
+                            <span class="hub-hint">Documento de referência</span>
+                        </span>
+                        <span class="hub-arrow" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M7 17L17 7"></path>
+                                <path d="M8 7h9v9"></path>
+                            </svg>
+                        </span>
+                    </a>
+
+                    <a class="hub-button" href="https://drive.google.com/drive/folders/1VUe6hny3e3PL_EMjTnYJSorF7WcEWb-7?usp=sharing" target="_blank" rel="noopener noreferrer">
+                        <span class="hub-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="5" width="15" height="14" rx="2"></rect>
+                                <path d="M17 10l5-3v10l-5-3z"></path>
+                            </svg>
+                        </span>
+                        <span class="hub-body">
+                            <span class="hub-label">Vídeos</span>
+                            <span class="hub-hint">Pasta compartilhada</span>
+                        </span>
+                        <span class="hub-arrow" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M7 17L17 7"></path>
+                                <path d="M8 7h9v9"></path>
+                            </svg>
+                        </span>
+                    </a>
+                </nav>
+
+                <p class="hub-note">
+                    Para acessar o <strong>Pitch</strong> e os <strong>Vídeos</strong>, é necessário estar conectado com o e-mail <strong>@logosofia.org.br</strong>.
+                </p>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-inner">
+                Fundação Logosófica · Florianópolis
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

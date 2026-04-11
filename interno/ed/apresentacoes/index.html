@@ -1,0 +1,3083 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Da órbita externa à atmosfera — Fundação Logosófica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <style>
+    /* ======================================================================
+   RESET & ROOT
+====================================================================== */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --navy-abyss: #030617;
+      --navy-deep: #060a1f;
+      --navy-dark: #0b1330;
+      --navy: #14204a;
+      --navy-mid: #1a2a5e;
+      --navy-light: #2e4282;
+      --gold: #f5a623;
+      --gold-hi: #ffd166;
+      --gold-soft: rgba(245, 166, 35, 0.15);
+      --gold-glow: rgba(245, 166, 35, 0.4);
+      --gold-low: #c97e10;
+      --cream: #faf7f0;
+      --white: #ffffff;
+      --text: #eef1fa;
+      --text-soft: #c4c9db;
+      --text-muted: #8a94b8;
+      --text-faint: #5a6489;
+      --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background: var(--navy-abyss);
+      color: var(--text);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-feature-settings: "liga" 1, "kern" 1;
+      cursor: default;
+    }
+
+    /* ======================================================================
+   BACKGROUND LAYERS
+====================================================================== */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .bg-gradient {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 90% 60% at 50% 108%, rgba(245, 166, 35, 0.07) 0%, transparent 58%),
+        radial-gradient(ellipse 70% 50% at 15% 30%, rgba(46, 66, 130, 0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 50% at 85% 80%, rgba(46, 66, 130, 0.14) 0%, transparent 60%),
+        linear-gradient(180deg, var(--navy-abyss) 0%, var(--navy-deep) 50%, var(--navy-abyss) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .bg-vignette {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(3, 6, 23, 0.55) 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* ======================================================================
+   UI CHROME
+====================================================================== */
+    .brand {
+      position: fixed;
+      top: 3.5vh;
+      left: 4vw;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 0.9vw;
+      opacity: 0.95;
+    }
+
+    .brand-sun {
+      width: 2.2vw;
+      height: 2.2vw;
+      min-width: 28px;
+      min-height: 28px;
+      background: url('/resources/LOG_Sol.png') center/contain no-repeat;
+      filter: drop-shadow(0 0 10px var(--gold-glow)) drop-shadow(0 0 20px rgba(245, 166, 35, 0.25));
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .brand-sun::after {
+      content: '';
+      position: absolute;
+      inset: -30%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 166, 35, 0.22) 0%, transparent 60%);
+      animation: pulse 4s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    .brand-wordmark {
+      height: 2.2vw;
+      min-height: 22px;
+      width: auto;
+      display: block;
+      opacity: 0.95;
+    }
+
+    .section-tag {
+      position: fixed;
+      bottom: 3.8vh;
+      left: 4vw;
+      z-index: 50;
+      font-family: var(--sans);
+      font-size: 0.95vw;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.24em;
+      display: flex;
+      align-items: center;
+      gap: 1.1vw;
+    }
+
+    .section-tag::before {
+      content: '';
+      width: 3vw;
+      min-width: 36px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .slide-count {
+      position: fixed;
+      bottom: 3.5vh;
+      right: 4vw;
+      z-index: 50;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1.8vw;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: baseline;
+      gap: 0.6vw;
+    }
+
+    .slide-count .current {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .slide-count .sep {
+      color: var(--text-faint);
+      font-size: 0.7em;
+      margin: 0 0.2vw;
+    }
+
+    .slide-count .total {
+      color: var(--text-faint);
+    }
+
+    .progress-track {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      z-index: 60;
+      background: rgba(245, 166, 35, 0.07);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold-low) 0%, var(--gold) 50%, var(--gold-hi) 100%);
+      width: 0;
+      transition: width 0.8s var(--ease);
+      box-shadow: 0 0 14px var(--gold-glow);
+    }
+
+    /* ======================================================================
+   NAVIGATION ARROWS
+====================================================================== */
+    .nav-arrow {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 55;
+      width: 3.4vw;
+      height: 3.4vw;
+      min-width: 48px;
+      min-height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(245, 166, 35, 0.18);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: var(--gold);
+      font-family: var(--serif);
+      font-size: 2.4vw;
+      font-weight: 300;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 0;
+      padding-bottom: 0.3vw;
+      transition: all 0.4s var(--ease);
+      opacity: 0;
+    }
+
+    body:hover .nav-arrow {
+      opacity: 0.45;
+    }
+
+    .nav-arrow:hover {
+      opacity: 1 !important;
+      background: rgba(245, 166, 35, 0.12);
+      border-color: var(--gold);
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    .nav-prev {
+      left: 2vw;
+    }
+
+    .nav-next {
+      right: 2vw;
+    }
+
+    .nav-hint {
+      position: fixed;
+      bottom: 3.6vh;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      font-family: var(--sans);
+      font-size: 0.75vw;
+      min-font-size: 11px;
+      color: var(--text-faint);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      display: flex;
+      align-items: center;
+      gap: 0.8vw;
+      transition: opacity 0.4s var(--ease);
+    }
+
+    body:hover .nav-hint {
+      opacity: 0.8;
+    }
+
+    .nav-hint kbd {
+      font-family: var(--sans);
+      background: rgba(245, 166, 35, 0.08);
+      border: 1px solid rgba(245, 166, 35, 0.2);
+      border-radius: 0.3vw;
+      padding: 0.2vw 0.55vw;
+      font-size: 0.7vw;
+      color: var(--gold);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    /* ======================================================================
+   SLIDES CONTAINER
+====================================================================== */
+    .slides {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 14vh 8vw 10vh;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(24px);
+      transition: opacity 0.85s var(--ease-out),
+        transform 0.85s var(--ease-out),
+        visibility 0.85s;
+      pointer-events: none;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .slide.centered {
+      align-items: center;
+      text-align: center;
+    }
+
+    .slide-container {
+      width: 100%;
+      max-width: 88vw;
+      position: relative;
+    }
+
+    /* ======================================================================
+   TYPOGRAPHY
+====================================================================== */
+    .eyebrow {
+      font-family: var(--sans);
+      font-size: 1.05vw;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.28em;
+      color: var(--gold);
+      margin-bottom: 3.5vh;
+      display: inline-flex;
+      align-items: center;
+      gap: 1.2vw;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 0.55vw;
+      min-width: 9px;
+      height: 0.55vw;
+      min-height: 9px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 10px var(--gold-glow), 0 0 20px rgba(245, 166, 35, 0.25);
+      flex-shrink: 0;
+    }
+
+    .eyebrow.center::before {
+      display: none;
+    }
+
+    .eyebrow.center::after {
+      display: none;
+    }
+
+    .eyebrow.center {
+      display: inline-block;
+      position: relative;
+      padding: 0 2.2vw;
+    }
+
+    .eyebrow.center::before,
+    .eyebrow.center::after {
+      display: block !important;
+      content: '';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0.55vw;
+      min-width: 9px;
+      height: 0.55vw;
+      min-height: 9px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 10px var(--gold-glow), 0 0 20px rgba(245, 166, 35, 0.25);
+    }
+
+    .eyebrow.center::before {
+      left: 0;
+      right: auto;
+    }
+
+    .eyebrow.center::after {
+      right: 0;
+      left: auto;
+    }
+
+    .slide h1 {
+      font-family: var(--serif);
+      font-size: 6.5vw;
+      font-weight: 400;
+      line-height: 0.98;
+      letter-spacing: -0.025em;
+      color: var(--white);
+      text-wrap: balance;
+      max-width: 16em;
+    }
+
+    .slide h1 em {
+      font-style: italic;
+      color: var(--gold-hi);
+      font-weight: 500;
+    }
+
+    .slide h2 {
+      font-family: var(--serif);
+      font-size: 4.8vw;
+      font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: -0.018em;
+      color: var(--white);
+      text-wrap: balance;
+      max-width: 17em;
+    }
+
+    .slide h2 em {
+      font-style: italic;
+      color: var(--gold-hi);
+      font-weight: 500;
+    }
+
+    .slide p.lead {
+      font-family: var(--sans);
+      font-size: 1.8vw;
+      line-height: 1.5;
+      font-weight: 400;
+      color: var(--text-soft);
+      max-width: 40em;
+      text-wrap: pretty;
+    }
+
+    /* ======================================================================
+   COVER SLIDE
+====================================================================== */
+    .slide-cover {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 8vh 8vw 26vh;
+      overflow: hidden;
+    }
+
+    .cover-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .cover-sun {
+      position: absolute;
+      bottom: -78vh;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 115vh;
+      height: 115vh;
+      background: url('/resources/LOG_Sol.png') center/contain no-repeat;
+      filter: drop-shadow(0 0 80px rgba(245, 166, 35, 0.45)) drop-shadow(0 0 160px rgba(245, 166, 35, 0.3));
+      opacity: 0.88;
+      animation: coverSunRise 2.5s var(--ease-out) both;
+    }
+
+    .cover-sun::before {
+      content: '';
+      position: absolute;
+      inset: -15%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 166, 35, 0.18) 0%, rgba(245, 166, 35, 0.08) 40%, transparent 70%);
+      animation: pulse 6s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    .cover-orbit {
+      position: absolute;
+      bottom: -78vh;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      border: 1px dashed rgba(245, 166, 35, 0.15);
+      pointer-events: none;
+      animation: coverOrbitFade 3s var(--ease-out) both;
+    }
+
+    .cover-orbit-1 {
+      width: 150vh;
+      height: 150vh;
+      animation-delay: 0.4s;
+    }
+
+    .cover-orbit-2 {
+      width: 190vh;
+      height: 190vh;
+      animation-delay: 0.7s;
+      border-color: rgba(245, 166, 35, 0.1);
+    }
+
+    .cover-orbit-3 {
+      width: 235vh;
+      height: 235vh;
+      animation-delay: 1s;
+      border-color: rgba(245, 166, 35, 0.06);
+    }
+
+    @keyframes coverSunRise {
+      from {
+        transform: translateX(-50%) translateY(40vh);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 0.88;
+      }
+    }
+
+    @keyframes coverOrbitFade {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.85);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+      }
+    }
+
+    .cover-content {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4.5vh;
+    }
+
+    .cover-eyebrow {
+      font-family: var(--sans);
+      font-size: 1.05vw;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.42em;
+      color: var(--gold);
+      padding: 0 0 0 0.42em;
+      animation: fadeIn 1.2s var(--ease-out) 0.3s both;
+    }
+
+    .cover-title {
+      font-family: var(--serif);
+      font-size: 9vw;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 0.92;
+      letter-spacing: -0.035em;
+      color: var(--white);
+      text-wrap: balance;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5vh;
+    }
+
+    .cover-title .line-1 {
+      animation: coverLine 1.1s var(--ease-out) 0.5s both;
+    }
+
+    .cover-title .line-2 {
+      animation: coverLine 1.1s var(--ease-out) 0.85s both;
+      color: var(--gold-hi);
+      font-style: italic;
+    }
+
+    @keyframes coverLine {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .cover-subtitle {
+      font-family: var(--sans);
+      font-size: 1.05vw;
+      font-weight: 400;
+      letter-spacing: 0.32em;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 2vw;
+      animation: fadeIn 1.2s var(--ease-out) 1.3s both;
+    }
+
+    .cover-subtitle::before,
+    .cover-subtitle::after {
+      content: '';
+      width: 4.5vw;
+      min-width: 50px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.6;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.7;
+      }
+
+      50% {
+        transform: scale(1.08);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ======================================================================
+   OBJECTIVE SLIDE
+====================================================================== */
+    .objective-text {
+      font-family: var(--serif);
+      font-size: 4.5vw;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.15;
+      letter-spacing: -0.018em;
+      color: var(--white);
+      max-width: 22em;
+      text-wrap: balance;
+    }
+
+    .objective-text strong {
+      font-weight: 600;
+      color: var(--gold-hi);
+      font-style: italic;
+    }
+
+    /* ======================================================================
+   PROBLEM SLIDE (list)
+====================================================================== */
+    .problem-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 3vh;
+      margin-top: 2vh;
+    }
+
+    .problem-list li {
+      font-family: var(--serif);
+      font-size: 4.5vw;
+      font-weight: 500;
+      font-style: italic;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 1.8vw;
+      line-height: 1.05;
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+
+    .slide.active .problem-list li {
+      animation: fadeInLeft 0.9s var(--ease-out) forwards;
+    }
+
+    .slide.active .problem-list li:nth-child(1) {
+      animation-delay: 0.4s;
+    }
+
+    .slide.active .problem-list li:nth-child(2) {
+      animation-delay: 0.65s;
+    }
+
+    .slide.active .problem-list li:nth-child(3) {
+      animation-delay: 0.9s;
+    }
+
+    .problem-list li::before {
+      content: '';
+      display: inline-block;
+      width: 1vw;
+      min-width: 14px;
+      height: 1vw;
+      min-height: 14px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 14px var(--gold-glow), 0 0 28px rgba(245, 166, 35, 0.3);
+      flex-shrink: 0;
+    }
+
+    /* ======================================================================
+   CHALLENGE CARDS (cenario)
+====================================================================== */
+    .challenges {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.4vw;
+      width: 100%;
+      margin-top: 5vh;
+    }
+
+    .challenge-card {
+      background: linear-gradient(180deg, rgba(26, 42, 94, 0.42) 0%, rgba(11, 19, 48, 0.62) 100%);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(245, 166, 35, 0.18);
+      border-radius: 1.4vw;
+      padding: 5vh 2.5vw;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(40px);
+      min-height: 44vh;
+    }
+
+    .slide.active .challenge-card {
+      animation: fadeInUp 0.9s var(--ease-out) forwards;
+    }
+
+    .slide.active .challenge-card:nth-child(1) {
+      animation-delay: 0.35s;
+    }
+
+    .slide.active .challenge-card:nth-child(2) {
+      animation-delay: 0.55s;
+    }
+
+    .slide.active .challenge-card:nth-child(3) {
+      animation-delay: 0.75s;
+    }
+
+    .challenge-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 2.5vw;
+      right: 2.5vw;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+    }
+
+    .challenge-card .num {
+      font-family: var(--serif);
+      font-size: 3.2vw;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--gold);
+      line-height: 1;
+      display: block;
+      margin-bottom: auto;
+    }
+
+    .challenge-card h3 {
+      font-family: var(--serif);
+      font-size: 2.35vw;
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--white);
+      letter-spacing: -0.012em;
+      margin-top: 3vh;
+    }
+
+    .challenge-card p {
+      font-family: var(--sans);
+      font-size: 1.15vw;
+      line-height: 1.6;
+      color: var(--text-soft);
+      margin-top: 2.5vh;
+      padding-top: 2.5vh;
+      border-top: 1px solid rgba(245, 166, 35, 0.18);
+    }
+
+    .challenge-card p .highlight {
+      color: var(--gold-hi);
+      font-weight: 600;
+    }
+
+    /* ======================================================================
+   ORBIT DIAGRAM
+====================================================================== */
+    .orbits-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      position: relative;
+    }
+
+    .orbits-diagram {
+      position: relative;
+      width: 68vh;
+      height: 68vh;
+    }
+
+    .orbit-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px dashed rgba(245, 166, 35, 0.35);
+      transition: all 0.6s var(--ease);
+    }
+
+    .orbit-external {
+      width: 68vh;
+      height: 68vh;
+      border-style: dotted;
+      border-color: rgba(245, 166, 35, 0.22);
+    }
+
+    .orbit-first {
+      width: 52vh;
+      height: 52vh;
+    }
+
+    .orbit-second {
+      width: 35vh;
+      height: 35vh;
+    }
+
+    .orbit-sun {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 17vh;
+      height: 17vh;
+      background: url('/resources/LOG_Sol.png') center/contain no-repeat;
+      filter: drop-shadow(0 0 30px var(--gold-glow)) drop-shadow(0 0 70px rgba(245, 166, 35, 0.3));
+      z-index: 5;
+      transition: all 0.6s var(--ease);
+    }
+
+    .orbit-sun::after {
+      content: '';
+      position: absolute;
+      inset: -40%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 166, 35, 0.18) 0%, transparent 60%);
+      animation: pulse 5s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    .orbit-rotator {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      transform: rotate(var(--start, 0deg));
+      animation: spin var(--dur, 24s) linear infinite;
+      animation-delay: var(--offset, 0s);
+    }
+
+    .orbit-first .orbit-rotator {
+      --dur: 28s;
+      --start: 30deg;
+      --offset: -3s;
+    }
+
+    .orbit-second .orbit-rotator {
+      --dur: 18s;
+      --start: 210deg;
+      --offset: -11s;
+      animation-direction: reverse;
+    }
+
+    .orbit-particle {
+      position: absolute;
+      top: -0.85vw;
+      left: 50%;
+      width: 1.7vw;
+      height: 1.7vw;
+      min-width: 18px;
+      min-height: 18px;
+      margin-left: -0.85vw;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #ffe9a3 0%, var(--gold) 55%, var(--gold-low) 100%);
+      box-shadow: 0 0 18px var(--gold-glow), 0 0 34px rgba(245, 166, 35, 0.3);
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Focus states */
+    .orbit-ring.dim {
+      opacity: 0.18;
+    }
+
+    .orbit-ring.focus {
+      border-color: var(--gold);
+      border-style: solid;
+      border-width: 2px;
+      box-shadow: 0 0 36px rgba(245, 166, 35, 0.18);
+      opacity: 1;
+    }
+
+    .orbit-sun.dim {
+      filter: grayscale(0.35) brightness(0.45) drop-shadow(0 0 12px rgba(245, 166, 35, 0.12));
+      opacity: 0.55;
+    }
+
+    .orbit-sun.dim::after {
+      animation-play-state: paused;
+      opacity: 0.3;
+    }
+
+    .orbit-sun.focus {
+      filter: drop-shadow(0 0 50px rgba(245, 166, 35, 0.7)) drop-shadow(0 0 120px rgba(245, 166, 35, 0.45));
+    }
+
+    /* ======================================================================
+   TWO-COLUMN LAYOUT (for orbit slides)
+====================================================================== */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1.05fr;
+      gap: 5vw;
+      align-items: center;
+      width: 100%;
+    }
+
+    .two-col .diagram-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .two-col .content-col h2 {
+      font-size: 4.3vw;
+    }
+
+    .questions {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2.6vh;
+      margin-top: 4.5vh;
+    }
+
+    .questions li {
+      font-family: var(--serif);
+      font-size: 2.55vw;
+      font-weight: 500;
+      font-style: italic;
+      line-height: 1.15;
+      color: var(--white);
+      position: relative;
+      padding-left: 3vw;
+      text-wrap: balance;
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+
+    .slide.active .questions li {
+      animation: fadeInLeft 0.8s var(--ease-out) forwards;
+    }
+
+    .slide.active .questions li:nth-child(1) {
+      animation-delay: 0.5s;
+    }
+
+    .slide.active .questions li:nth-child(2) {
+      animation-delay: 0.7s;
+    }
+
+    .slide.active .questions li:nth-child(3) {
+      animation-delay: 0.9s;
+    }
+
+    .slide.active .questions li:nth-child(4) {
+      animation-delay: 1.1s;
+    }
+
+    .slide.active .questions li:nth-child(5) {
+      animation-delay: 1.3s;
+    }
+
+    .slide.active .questions li:nth-child(6) {
+      animation-delay: 1.5s;
+    }
+
+    .questions li::before {
+      content: '?';
+      position: absolute;
+      left: 0;
+      top: -0.1em;
+      font-size: 1.3em;
+      color: var(--gold);
+      font-weight: 600;
+      font-style: italic;
+    }
+
+    .questions.compact li {
+      font-size: 2vw;
+    }
+
+    /* ======================================================================
+   QUOTE SLIDES
+====================================================================== */
+    .slide-quote {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .quote {
+      font-family: var(--serif);
+      font-size: 3vw;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.35;
+      color: var(--white);
+      max-width: 44em;
+      text-wrap: balance;
+      position: relative;
+      padding: 6vh 5vw 3vh;
+    }
+
+    .quote::before {
+      content: '\201C';
+      position: absolute;
+      top: -1vh;
+      left: 0;
+      font-size: 14vw;
+      color: var(--gold);
+      opacity: 0.35;
+      line-height: 1;
+      font-family: var(--serif);
+      font-style: italic;
+    }
+
+    .quote::after {
+      content: '\201D';
+      position: absolute;
+      bottom: -5vh;
+      right: 0;
+      font-size: 14vw;
+      color: var(--gold);
+      opacity: 0.35;
+      line-height: 1;
+      font-family: var(--serif);
+      font-style: italic;
+    }
+
+    .quote em {
+      color: var(--gold-hi);
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .quote.short {
+      font-size: 4.2vw;
+      line-height: 1.25;
+    }
+
+    .quote.small {
+      font-size: 2.7vw;
+    }
+
+    .quote-source {
+      font-family: var(--sans);
+      font-size: 1.05vw;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.28em;
+      color: var(--gold);
+      margin-top: 6vh;
+      display: inline-flex;
+      align-items: center;
+      gap: 1.3vw;
+    }
+
+    .quote-source::before {
+      content: '';
+      width: 3vw;
+      min-width: 36px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    /* ======================================================================
+   AUDIENCE SPLIT (primeiro/depois)
+====================================================================== */
+    .audience-split {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 2.5vw;
+      align-items: center;
+      margin-top: 4vh;
+      width: 100%;
+    }
+
+    .audience-card {
+      background: linear-gradient(180deg, rgba(26, 42, 94, 0.35) 0%, rgba(11, 19, 48, 0.55) 100%);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(245, 166, 35, 0.18);
+      border-radius: 1.4vw;
+      padding: 5vh 2.5vw;
+      text-align: center;
+      position: relative;
+    }
+
+    .audience-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 2vw;
+      right: 2vw;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+    }
+
+    .audience-card .order {
+      font-family: var(--sans);
+      font-size: 0.95vw;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.32em;
+      margin-bottom: 2.5vh;
+      font-weight: 600;
+    }
+
+    .audience-card h3 {
+      font-family: var(--serif);
+      font-size: 2.6vw;
+      font-weight: 500;
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.15;
+      text-wrap: balance;
+    }
+
+    .audience-arrow {
+      font-family: var(--serif);
+      font-size: 4vw;
+      font-weight: 300;
+      color: var(--gold);
+      opacity: 0.6;
+      line-height: 1;
+    }
+
+    .sand-note {
+      margin-top: 5vh;
+      font-family: var(--serif);
+      font-size: 1.8vw;
+      font-style: italic;
+      color: var(--text-soft);
+      max-width: 40em;
+      text-wrap: balance;
+      line-height: 1.35;
+      position: relative;
+      padding-left: 3vw;
+    }
+
+    .sand-note::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+    }
+
+    /* ======================================================================
+   DUAL WORDS (curso | atividades)
+====================================================================== */
+    .dual-words {
+      display: flex;
+      align-items: center;
+      gap: 4vw;
+      margin-top: 6vh;
+      font-family: var(--serif);
+      font-size: 5vw;
+      font-style: italic;
+      font-weight: 500;
+      line-height: 1;
+      color: var(--gold-hi);
+    }
+
+    .dual-words .sep {
+      color: var(--text-faint);
+      font-size: 0.65em;
+      font-style: normal;
+      font-weight: 300;
+    }
+
+    /* ======================================================================
+   ROTEIRO SLIDES
+====================================================================== */
+    .roteiro-marker {
+      font-family: var(--sans);
+      font-size: 0.95vw;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.32em;
+      color: var(--gold);
+      margin-bottom: 4vh;
+      display: inline-flex;
+      align-items: center;
+      gap: 1.2vw;
+    }
+
+    .roteiro-marker::before {
+      content: '';
+      width: 3vw;
+      min-width: 40px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .roteiro-marker::after {
+      content: '';
+      width: 3vw;
+      min-width: 40px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .roteiro-text {
+      font-family: var(--serif);
+      font-size: 3.2vw;
+      font-weight: 500;
+      line-height: 1.22;
+      color: var(--white);
+      letter-spacing: -0.008em;
+      max-width: 22em;
+      text-wrap: balance;
+      font-style: italic;
+    }
+
+    .roteiro-text strong {
+      color: var(--gold-hi);
+      font-weight: 600;
+    }
+
+    .roteiro-text.big {
+      font-size: 3.8vw;
+    }
+
+    .roteiro-text.medium {
+      font-size: 2.8vw;
+      max-width: 26em;
+    }
+
+    .roteiro-text.small {
+      font-size: 2.3vw;
+      max-width: 30em;
+      line-height: 1.3;
+    }
+
+    .stage-direction {
+      font-family: var(--sans);
+      font-size: 1vw;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-top: 3vh;
+      letter-spacing: 0.04em;
+      opacity: 0.7;
+    }
+
+    .roteiro-emphasis {
+      font-family: var(--serif);
+      font-size: 5.5vw;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--gold-hi);
+      line-height: 1;
+      margin-top: 3vh;
+    }
+
+    /* ======================================================================
+   ENDING
+====================================================================== */
+    .ending {
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ending .eyebrow {
+      justify-content: center;
+    }
+
+    .ending-message {
+      font-family: var(--serif);
+      font-size: 6.5vw;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.05;
+      color: var(--white);
+      margin: 3vh 0 5vh;
+      text-wrap: balance;
+    }
+
+    .ending-message em {
+      color: var(--gold-hi);
+      display: block;
+      margin-top: 1.5vh;
+      font-size: 0.85em;
+    }
+
+    .ending-signoff {
+      font-family: var(--sans);
+      font-size: 1vw;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 1.5vw;
+    }
+
+    .ending-signoff::before,
+    .ending-signoff::after {
+      content: '';
+      width: 3vw;
+      min-width: 40px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.6;
+    }
+
+    /* ======================================================================
+   ANIMATIONS
+====================================================================== */
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Scroll-like entrance for main slide elements */
+    .slide.active .eyebrow,
+    .slide.active h1,
+    .slide.active h2,
+    .slide.active .objective-text,
+    .slide.active .lead,
+    .slide.active .roteiro-marker,
+    .slide.active .roteiro-text,
+    .slide.active .dual-words,
+    .slide.active .ending-message,
+    .slide.active .ending-signoff,
+    .slide.active .quote,
+    .slide.active .quote-source,
+    .slide.active .audience-split,
+    .slide.active .sand-note,
+    .slide.active .orbits-diagram,
+    .slide.active .stage-direction,
+    .slide.active .roteiro-emphasis {
+      animation: slideContentIn 1s var(--ease-out) both;
+    }
+
+    .slide.active h2 {
+      animation-delay: 0.15s;
+    }
+
+    .slide.active .objective-text {
+      animation-delay: 0.25s;
+    }
+
+    .slide.active .lead {
+      animation-delay: 0.35s;
+    }
+
+    .slide.active .dual-words {
+      animation-delay: 0.5s;
+    }
+
+    .slide.active .quote-source {
+      animation-delay: 0.5s;
+    }
+
+    .slide.active .audience-split {
+      animation-delay: 0.3s;
+    }
+
+    .slide.active .sand-note {
+      animation-delay: 0.8s;
+    }
+
+    .slide.active .stage-direction {
+      animation-delay: 0.7s;
+    }
+
+    .slide.active .roteiro-emphasis {
+      animation-delay: 0.5s;
+    }
+
+    .slide.active .orbits-diagram {
+      animation-delay: 0.2s;
+      animation-duration: 1.3s;
+    }
+
+    .slide.active .ending-message {
+      animation-delay: 0.3s;
+    }
+
+    .slide.active .ending-signoff {
+      animation-delay: 0.8s;
+    }
+
+    @keyframes slideContentIn {
+      from {
+        opacity: 0;
+        transform: translateY(22px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ======================================================================
+   SAFETY: force visibility once entrance animations should be complete.
+   Only touches opacity + in-flow transforms; absolute-positioned elements
+   keep their own transform.
+====================================================================== */
+    body.anim-settled .slide .eyebrow,
+    body.anim-settled .slide h1,
+    body.anim-settled .slide h2,
+    body.anim-settled .slide .objective-text,
+    body.anim-settled .slide .lead,
+    body.anim-settled .slide .roteiro-marker,
+    body.anim-settled .slide .roteiro-text,
+    body.anim-settled .slide .dual-words,
+    body.anim-settled .slide .ending-message,
+    body.anim-settled .slide .ending-signoff,
+    body.anim-settled .slide .quote,
+    body.anim-settled .slide .quote-source,
+    body.anim-settled .slide .audience-split,
+    body.anim-settled .slide .sand-note,
+    body.anim-settled .slide .orbits-diagram,
+    body.anim-settled .slide .stage-direction,
+    body.anim-settled .slide .roteiro-emphasis,
+    body.anim-settled .slide .problem-list li,
+    body.anim-settled .slide .challenge-card,
+    body.anim-settled .slide .questions li,
+    body.anim-settled .slide .cover-title .line-1,
+    body.anim-settled .slide .cover-title .line-2,
+    body.anim-settled .slide .cover-subtitle,
+    body.anim-settled .slide .cover-eyebrow {
+      opacity: 1 !important;
+      transform: none !important;
+      visibility: visible !important;
+    }
+
+    body.anim-settled .cover-sun {
+      opacity: 0.88 !important;
+    }
+
+    body.anim-settled .cover-orbit {
+      opacity: 1 !important;
+    }
+
+    body.anim-settled .cover-orbit-3 {
+      opacity: 0.6 !important;
+    }
+
+    /* ======================================================================
+   RESPONSIVE
+====================================================================== */
+    @media (max-width: 1280px) {
+      .slide {
+        padding: 12vh 6vw 8vh;
+      }
+
+      .cover-title {
+        font-size: 10vw;
+      }
+
+      .slide h1 {
+        font-size: 7.5vw;
+      }
+
+      .slide h2 {
+        font-size: 5.5vw;
+      }
+    }
+
+    @media (aspect-ratio: 16/9) {
+      /* TV optimized */
+    }
+
+    @media (max-width: 900px) {
+      .challenges {
+        grid-template-columns: 1fr;
+        gap: 2vh;
+      }
+
+      .two-col {
+        grid-template-columns: 1fr;
+        gap: 4vh;
+      }
+
+      .audience-split {
+        grid-template-columns: 1fr;
+      }
+
+      .audience-arrow {
+        transform: rotate(90deg);
+      }
+
+      .slide {
+        padding: 11vh 6vw 9vh;
+      }
+
+      .cover-title {
+        font-size: 11vw;
+      }
+
+      .slide h1 {
+        font-size: 8vw;
+      }
+
+      .slide h2 {
+        font-size: 6.5vw;
+      }
+
+      .objective-text {
+        font-size: 5.2vw;
+      }
+
+      .problem-list li {
+        font-size: 5.4vw;
+      }
+
+      .questions li {
+        font-size: 3.4vw;
+      }
+
+      .questions.compact li {
+        font-size: 2.8vw;
+      }
+
+      .two-col .content-col h2 {
+        font-size: 6vw;
+      }
+
+      .orbits-diagram {
+        width: min(55vh, 80vw);
+        height: min(55vh, 80vw);
+      }
+
+      .orbit-external {
+        width: 100%;
+        height: 100%;
+      }
+
+      .orbit-first {
+        width: 76.5%;
+        height: 76.5%;
+      }
+
+      .orbit-second {
+        width: 51.5%;
+        height: 51.5%;
+      }
+
+      .orbit-sun {
+        width: 25%;
+        height: 25%;
+      }
+
+      .orbit-particle {
+        width: 18px;
+        height: 18px;
+        top: -9px;
+        margin-left: -9px;
+      }
+
+      .challenge-card {
+        min-height: auto;
+        padding: 4vh 5vw;
+      }
+
+      .challenge-card .num {
+        font-size: 4.5vw;
+      }
+
+      .challenge-card h3 {
+        font-size: 3.4vw;
+      }
+
+      .challenge-card p {
+        font-size: 1.9vw;
+      }
+    }
+
+    @media (max-width: 768px) {
+
+      /* Tablet portrait / large phone */
+      .slide {
+        padding: 13vh 7vw 11vh;
+      }
+
+      /* Chrome */
+      .brand {
+        top: 2.4vh;
+        left: 5vw;
+        gap: 10px;
+      }
+
+      .brand-sun {
+        width: 26px;
+        height: 26px;
+        min-width: 26px;
+        min-height: 26px;
+      }
+
+      .brand-wordmark {
+        height: 22px;
+        min-height: 22px;
+      }
+
+      .section-tag {
+        font-size: 10px;
+        bottom: 2.6vh;
+        left: 5vw;
+        gap: 10px;
+        letter-spacing: 0.22em;
+      }
+
+      .section-tag::before {
+        width: 26px;
+        min-width: 26px;
+      }
+
+      .slide-count {
+        font-size: 16px;
+        bottom: 2.4vh;
+        right: 5vw;
+        gap: 4px;
+      }
+
+      .slide-count .sep {
+        font-size: 0.7em;
+        margin: 0 2px;
+      }
+
+      .nav-hint {
+        display: none;
+      }
+
+      .nav-arrow {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        min-height: 42px;
+        font-size: 24px;
+        padding-bottom: 3px;
+        opacity: 0.55;
+      }
+
+      .nav-prev {
+        left: 3vw;
+      }
+
+      .nav-next {
+        right: 3vw;
+      }
+
+      /* Cover */
+      .cover-title {
+        font-size: clamp(44px, 13vw, 88px);
+      }
+
+      .cover-eyebrow {
+        font-size: 11px;
+        letter-spacing: 0.32em;
+      }
+
+      .cover-subtitle {
+        font-size: 11px;
+        gap: 16px;
+        letter-spacing: 0.26em;
+      }
+
+      .cover-subtitle::before,
+      .cover-subtitle::after {
+        width: 40px;
+        min-width: 32px;
+      }
+
+      .cover-sun {
+        width: 135vw;
+        height: 135vw;
+        bottom: -82vw;
+      }
+
+      .cover-orbit-1 {
+        width: 170vw;
+        height: 170vw;
+      }
+
+      .cover-orbit-2 {
+        width: 210vw;
+        height: 210vw;
+      }
+
+      .cover-orbit-3 {
+        width: 250vw;
+        height: 250vw;
+      }
+
+      /* Typography */
+      .slide h1 {
+        font-size: clamp(34px, 10vw, 74px);
+        max-width: none;
+      }
+
+      .slide h2 {
+        font-size: clamp(28px, 8vw, 58px);
+        max-width: none;
+      }
+
+      .eyebrow {
+        font-size: 11px;
+        letter-spacing: 0.22em;
+        margin-bottom: 2.8vh;
+        gap: 12px;
+      }
+
+      .eyebrow::before {
+        width: 9px;
+        height: 9px;
+        min-width: 9px;
+        min-height: 9px;
+      }
+
+      .eyebrow.center {
+        padding: 0 24px;
+      }
+
+      .eyebrow.center::before,
+      .eyebrow.center::after {
+        width: 9px;
+        height: 9px;
+        min-width: 9px;
+        min-height: 9px;
+      }
+
+      /* Objetivo */
+      .objective-text {
+        font-size: clamp(22px, 6.2vw, 46px);
+        max-width: none;
+        line-height: 1.2;
+      }
+
+      /* Problema */
+      .problem-list {
+        gap: 2.6vh;
+        margin-top: 1.5vh;
+      }
+
+      .problem-list li {
+        font-size: clamp(26px, 7.5vw, 54px);
+        gap: 14px;
+        line-height: 1.1;
+      }
+
+      .problem-list li::before {
+        width: 13px;
+        height: 13px;
+        min-width: 13px;
+        min-height: 13px;
+      }
+
+      /* Cenário cards */
+      .challenges {
+        gap: 2vh;
+        margin-top: 2.5vh;
+      }
+
+      .challenge-card {
+        padding: 3.5vh 5vw;
+        min-height: auto;
+        border-radius: 14px;
+      }
+
+      .challenge-card .num {
+        font-size: 30px;
+      }
+
+      .challenge-card h3 {
+        font-size: clamp(18px, 4.8vw, 28px);
+        margin-top: 1.6vh;
+      }
+
+      .challenge-card p {
+        font-size: 14px;
+        margin-top: 1.8vh;
+        padding-top: 1.8vh;
+      }
+
+      /* Orbit slides */
+      .two-col {
+        gap: 3vh;
+      }
+
+      .two-col .content-col h2 {
+        font-size: clamp(26px, 7.5vw, 52px);
+      }
+
+      .orbits-diagram {
+        width: min(48vh, 74vw);
+        height: min(48vh, 74vw);
+      }
+
+      .questions {
+        margin-top: 2.8vh;
+        gap: 2vh;
+      }
+
+      .questions li {
+        font-size: clamp(18px, 4.5vw, 32px);
+        padding-left: 26px;
+      }
+
+      .questions.compact li {
+        font-size: clamp(15px, 3.8vw, 26px);
+      }
+
+      /* Quotes */
+      .quote {
+        font-size: clamp(20px, 5.4vw, 42px);
+        padding: 4vh 6vw 3vh;
+        line-height: 1.38;
+      }
+
+      .quote.short {
+        font-size: clamp(26px, 7vw, 52px);
+      }
+
+      .quote.small {
+        font-size: clamp(18px, 4.8vw, 34px);
+      }
+
+      .quote::before,
+      .quote::after {
+        font-size: 90px;
+      }
+
+      .quote::after {
+        bottom: -3vh;
+      }
+
+      .quote-source {
+        font-size: 11px;
+        margin-top: 4vh;
+        gap: 12px;
+        letter-spacing: 0.22em;
+      }
+
+      .quote-source::before {
+        width: 9px;
+        height: 9px;
+        min-width: 9px;
+        min-height: 9px;
+        border-radius: 50%;
+        background: var(--gold);
+        box-shadow: 0 0 10px var(--gold-glow);
+      }
+
+      /* Roteiro */
+      .roteiro-marker {
+        font-size: 11px;
+        margin-bottom: 3vh;
+        gap: 12px;
+        letter-spacing: 0.24em;
+      }
+
+      .roteiro-marker::before,
+      .roteiro-marker::after {
+        width: 22px;
+        min-width: 22px;
+      }
+
+      .roteiro-text {
+        font-size: clamp(22px, 5.6vw, 46px);
+      }
+
+      .roteiro-text.big {
+        font-size: clamp(26px, 6.8vw, 54px);
+      }
+
+      .roteiro-text.medium {
+        font-size: clamp(20px, 5vw, 40px);
+      }
+
+      .roteiro-text.small {
+        font-size: clamp(18px, 4.4vw, 34px);
+      }
+
+      .stage-direction {
+        font-size: 12px;
+      }
+
+      .roteiro-emphasis {
+        font-size: clamp(32px, 8.5vw, 62px);
+      }
+
+      /* Dual words */
+      .dual-words {
+        font-size: clamp(30px, 7.5vw, 58px);
+        gap: 24px;
+        margin-top: 4vh;
+      }
+
+      /* Audience split */
+      .audience-split {
+        gap: 2.4vh;
+        margin-top: 2.8vh;
+      }
+
+      .audience-card {
+        padding: 3vh 5vw;
+        border-radius: 14px;
+      }
+
+      .audience-card .order {
+        font-size: 10px;
+        margin-bottom: 1.5vh;
+        letter-spacing: 0.28em;
+      }
+
+      .audience-card h3 {
+        font-size: clamp(18px, 4.8vw, 30px);
+      }
+
+      .audience-arrow {
+        font-size: 34px;
+        line-height: 1;
+      }
+
+      .sand-note {
+        font-size: clamp(14px, 3.4vw, 22px);
+        margin-top: 3vh;
+        padding-left: 22px;
+        line-height: 1.4;
+      }
+
+      /* Ending */
+      .ending-message {
+        font-size: clamp(32px, 8.5vw, 62px);
+        margin: 2.5vh 0 4vh;
+      }
+
+      .ending-signoff {
+        font-size: 10px;
+        gap: 14px;
+        letter-spacing: 0.28em;
+      }
+
+      .ending-signoff::before,
+      .ending-signoff::after {
+        width: 32px;
+        min-width: 32px;
+      }
+    }
+
+    @media (max-width: 480px) {
+
+      /* Phones */
+      .slide {
+        padding: 13vh 6vw 12vh;
+      }
+
+      .brand {
+        top: 2vh;
+        left: 5vw;
+        gap: 8px;
+      }
+
+      .brand-sun {
+        width: 22px;
+        height: 22px;
+        min-width: 22px;
+        min-height: 22px;
+      }
+
+      .brand-wordmark {
+        height: 18px;
+        min-height: 18px;
+      }
+
+      .section-tag {
+        font-size: 9px;
+        bottom: 2.4vh;
+        gap: 8px;
+      }
+
+      .section-tag::before {
+        width: 20px;
+        min-width: 20px;
+      }
+
+      .slide-count {
+        font-size: 14px;
+        bottom: 2.2vh;
+      }
+
+      .nav-arrow {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        min-height: 38px;
+        font-size: 22px;
+      }
+
+      /* Cover */
+      .cover-title {
+        font-size: clamp(38px, 13vw, 62px);
+      }
+
+      .cover-eyebrow {
+        font-size: 10px;
+        letter-spacing: 0.28em;
+      }
+
+      .cover-subtitle {
+        font-size: 10px;
+        gap: 12px;
+      }
+
+      .cover-subtitle::before,
+      .cover-subtitle::after {
+        width: 30px;
+        min-width: 24px;
+      }
+
+      /* Headings */
+      .slide h1 {
+        font-size: clamp(30px, 11vw, 54px);
+      }
+
+      .slide h2 {
+        font-size: clamp(24px, 9vw, 42px);
+        line-height: 1.08;
+      }
+
+      .eyebrow {
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        margin-bottom: 2.4vh;
+      }
+
+      /* Objetivo */
+      .objective-text {
+        font-size: clamp(20px, 6.5vw, 36px);
+        line-height: 1.22;
+      }
+
+      /* Problema */
+      .problem-list {
+        gap: 2.2vh;
+      }
+
+      .problem-list li {
+        font-size: clamp(24px, 8vw, 42px);
+        gap: 12px;
+      }
+
+      .problem-list li::before {
+        width: 12px;
+        height: 12px;
+        min-width: 12px;
+        min-height: 12px;
+      }
+
+      /* Cenário cards */
+      .challenge-card {
+        padding: 3vh 5vw;
+      }
+
+      .challenge-card .num {
+        font-size: 26px;
+      }
+
+      .challenge-card h3 {
+        font-size: clamp(17px, 5vw, 22px);
+      }
+
+      .challenge-card p {
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      /* Orbit diagrams */
+      .orbits-diagram {
+        width: min(44vh, 72vw);
+        height: min(44vh, 72vw);
+      }
+
+      .questions {
+        gap: 1.8vh;
+      }
+
+      .questions li {
+        font-size: clamp(16px, 5vw, 26px);
+        padding-left: 22px;
+      }
+
+      .questions.compact li {
+        font-size: clamp(14px, 4.2vw, 22px);
+      }
+
+      /* Quotes */
+      .quote {
+        font-size: clamp(18px, 5.6vw, 32px);
+        padding: 3.5vh 7vw 3vh;
+      }
+
+      .quote.short {
+        font-size: clamp(22px, 7.2vw, 40px);
+      }
+
+      .quote.small {
+        font-size: clamp(16px, 5vw, 28px);
+      }
+
+      .quote::before,
+      .quote::after {
+        font-size: 70px;
+      }
+
+      /* Roteiro */
+      .roteiro-text {
+        font-size: clamp(20px, 6vw, 36px);
+      }
+
+      .roteiro-text.big {
+        font-size: clamp(22px, 7vw, 42px);
+      }
+
+      .roteiro-text.medium {
+        font-size: clamp(18px, 5.2vw, 32px);
+      }
+
+      .roteiro-text.small {
+        font-size: clamp(16px, 4.6vw, 28px);
+      }
+
+      .roteiro-emphasis {
+        font-size: clamp(28px, 9vw, 48px);
+      }
+
+      /* Dual words */
+      .dual-words {
+        font-size: clamp(26px, 8vw, 44px);
+        gap: 18px;
+      }
+
+      /* Audience */
+      .audience-card h3 {
+        font-size: clamp(16px, 5vw, 24px);
+      }
+
+      .audience-arrow {
+        font-size: 28px;
+      }
+
+      .sand-note {
+        font-size: clamp(13px, 3.6vw, 18px);
+      }
+
+      /* Ending */
+      .ending-message {
+        font-size: clamp(28px, 9vw, 48px);
+      }
+
+      .ending-signoff {
+        font-size: 9px;
+        letter-spacing: 0.22em;
+        gap: 10px;
+      }
+
+      .ending-signoff::before,
+      .ending-signoff::after {
+        width: 22px;
+        min-width: 22px;
+      }
+    }
+
+    @media (max-height: 520px) and (orientation: landscape) {
+
+      /* Phone landscape — trim vertical padding so content fits */
+      .slide {
+        padding: 12vh 6vw 12vh;
+      }
+
+      .brand {
+        top: 4vh;
+      }
+
+      .section-tag,
+      .slide-count {
+        bottom: 4vh;
+      }
+
+      .problem-list {
+        gap: 1.6vh;
+      }
+
+      .problem-list li {
+        font-size: clamp(22px, 6vw, 44px);
+      }
+
+      .orbits-diagram {
+        width: min(60vh, 42vw);
+        height: min(60vh, 42vw);
+      }
+
+      .challenges {
+        gap: 1.4vh;
+      }
+
+      .challenge-card {
+        padding: 2.4vh 4vw;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+  <div class="bg-gradient"></div>
+  <div class="bg-vignette"></div>
+
+  <!-- UI CHROME -->
+  <div class="brand">
+    <span class="brand-sun"></span>
+    <img class="brand-wordmark" src="/resources/LOG_Assinaturas_Logosofia_Principal_Branco_Alta.png" alt="Logosofia">
+  </div>
+
+  <div class="section-tag" id="sectionTag">Abertura</div>
+
+  <div class="slide-count">
+    <span class="current" id="currentSlide">01</span>
+    <span class="sep">—</span>
+    <span class="total" id="totalSlides">32</span>
+  </div>
+
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <button class="nav-arrow nav-prev" id="btnPrev" aria-label="Anterior">‹</button>
+  <button class="nav-arrow nav-next" id="btnNext" aria-label="Próximo">›</button>
+
+  <div class="nav-hint">
+    <kbd>←</kbd> <kbd>→</kbd> <span>navegar</span>
+  </div>
+
+  <!-- ====================================================================
+     SLIDES
+==================================================================== -->
+  <div class="slides">
+
+    <!-- 01 · COVER -->
+    <section class="slide slide-cover active" data-section="Abertura">
+      <div class="cover-bg">
+        <div class="cover-orbit cover-orbit-3"></div>
+        <div class="cover-orbit cover-orbit-2"></div>
+        <div class="cover-orbit cover-orbit-1"></div>
+        <div class="cover-sun"></div>
+      </div>
+      <div class="cover-content">
+        <div class="cover-eyebrow">Oficina — Fundação Logosófica</div>
+        <h1 class="cover-title">
+          <span class="line-1">Da órbita externa</span>
+          <span class="line-2">à atmosfera</span>
+        </h1>
+        <div class="cover-subtitle">
+          <span>Florianópolis</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 · OBJETIVO -->
+    <section class="slide" data-section="Abertura">
+      <div class="slide-container">
+        <div class="eyebrow">Objetivo</div>
+        <p class="objective-text">
+          Compartilhar como temos descoberto novas formas de <strong>atrair seres aptos</strong> a serem discípulos de
+          forma <strong>mais efetiva e precisa</strong>.
+        </p>
+      </div>
+    </section>
+
+    <!-- 03 · O PROBLEMA -->
+    <section class="slide" data-section="O problema">
+      <div class="slide-container">
+        <div class="eyebrow">O diagnóstico</div>
+        <!-- <h2>O <em>problema</em> que nos move.</h2> -->
+        <ul class="problem-list">
+          <li>Poucos convidados</li>
+          <li>Poucos pedidos de curso</li>
+          <li>Poucos ingressos</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 04 · O CENÁRIO -->
+    <section class="slide" data-section="O problema">
+      <div class="slide-container">
+        <div class="eyebrow">Por que isso acontece</div>
+        <div class="challenges">
+          <article class="challenge-card">
+            <span class="num">01</span>
+            <h3>Atenção extremamente disputada</h3>
+            <p>Nos últimos 10 anos cresceram em mais de <span class="highlight">80x</span> o número de
+              oportunidades/convites que uma pessoa possui.</p>
+          </article>
+          <article class="challenge-card">
+            <span class="num">02</span>
+            <h3>Autoconhecimento comum aos montes</h3>
+          </article>
+          <article class="challenge-card">
+            <span class="num">03</span>
+            <h3>Ofertas muito bem apresentadas e atraentes</h3>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 · ÓRBITAS E ATMOSFERA (concept intro) -->
+    <section class="slide" data-section="Órbitas e atmosfera">
+      <div class="slide-container">
+        <div class="two-col">
+          <div class="diagram-col">
+            <div class="orbits-diagram">
+              <div class="orbit-ring orbit-external"></div>
+              <div class="orbit-ring orbit-first">
+                <div class="orbit-rotator">
+                  <div class="orbit-particle"></div>
+                </div>
+              </div>
+              <div class="orbit-ring orbit-second">
+                <div class="orbit-rotator">
+                  <div class="orbit-particle"></div>
+                </div>
+              </div>
+              <div class="orbit-sun"></div>
+            </div>
+          </div>
+          <div class="content-col">
+            <div class="eyebrow">O modelo</div>
+            <h2>Órbitas e <em>atmosfera</em>.</h2>
+            <p class="lead" style="margin-top: 4vh;">Cada etapa antes do ser chegar a sede, é uma órbita. Nosso objetivo
+              é <em style="color:var(--gold-hi);font-style:italic;font-weight:600;">otimizar</em> cada uma delas. Desde
+              de o primeiro contato com a Logosofia, até o ingresso.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 · EXTERNOS À ÓRBITA -->
+    <section class="slide" data-section="Externos à órbita">
+      <div class="slide-container">
+        <div class="two-col">
+          <div class="diagram-col">
+            <div class="orbits-diagram">
+              <div class="orbit-ring orbit-external focus"></div>
+              <div class="orbit-ring orbit-first dim"></div>
+              <div class="orbit-ring orbit-second dim"></div>
+              <div class="orbit-sun dim"></div>
+            </div>
+          </div>
+          <div class="content-col">
+            <div class="eyebrow">Etapa 01 · Externos à órbita</div>
+            <h2>Antes do <em>primeiro contato</em>.</h2>
+            <ul class="questions">
+              <li>Como capturar a atenção?</li>
+              <li>De quem capturar a atenção?</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 · PRIMEIRA ÓRBITA -->
+    <section class="slide" data-section="Primeira órbita">
+      <div class="slide-container">
+        <div class="two-col">
+          <div class="diagram-col">
+            <div class="orbits-diagram">
+              <div class="orbit-ring orbit-external dim"></div>
+              <div class="orbit-ring orbit-first focus">
+                <div class="orbit-rotator">
+                  <div class="orbit-particle"></div>
+                </div>
+              </div>
+              <div class="orbit-ring orbit-second dim"></div>
+              <div class="orbit-sun dim"></div>
+            </div>
+          </div>
+          <div class="content-col">
+            <div class="eyebrow">Etapa 02 · Primeira órbita</div>
+            <h2>O <em>1º contato</em>.</h2>
+            <ul class="questions">
+              <li>Como reter a atenção?</li>
+              <li>Como conduzir a uma atividade?</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 · SEGUNDA ÓRBITA -->
+    <section class="slide" data-section="Segunda órbita">
+      <div class="slide-container">
+        <div class="two-col">
+          <div class="diagram-col">
+            <div class="orbits-diagram">
+              <div class="orbit-ring orbit-external dim"></div>
+              <div class="orbit-ring orbit-first dim"></div>
+              <div class="orbit-ring orbit-second focus">
+                <div class="orbit-rotator">
+                  <div class="orbit-particle"></div>
+                </div>
+              </div>
+              <div class="orbit-sun dim"></div>
+            </div>
+          </div>
+          <div class="content-col">
+            <div class="eyebrow">Etapa 03 · Segunda órbita</div>
+            <h2>A <em>1ª atividade</em> ou conteúdo online extenso.</h2>
+            <ul class="questions">
+              <li>Como levar para uma atividade presencial?</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 · ATMOSFERA -->
+    <section class="slide" data-section="Atmosfera">
+      <div class="slide-container">
+        <div class="two-col">
+          <div class="diagram-col">
+            <div class="orbits-diagram">
+              <div class="orbit-ring orbit-external dim"></div>
+              <div class="orbit-ring orbit-first dim"></div>
+              <div class="orbit-ring orbit-second dim"></div>
+              <div class="orbit-sun focus"></div>
+            </div>
+          </div>
+          <div class="content-col">
+            <div class="eyebrow">Etapa 04 · Atmosfera</div>
+            <h2>O <em>ambiente</em> logosófico físico.</h2>
+            <ul class="questions compact">
+              <li>Como deve ser a experiência?</li>
+              <li>Como funciona quando chegam convidados nas sedes de vocês?</li>
+              <li>O que é falado? Como?</li>
+              <li>Como o curso é apresentado?</li>
+              <li>Tem a devida hierarquia?</li>
+              <li>E quando o curso é pedido?</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 · O QUE COMPREENDEMOS - INTRO -->
+    <section class="slide centered" data-section="O que compreendemos">
+      <div class="slide-container" style="text-align: center;">
+        <h1 style="margin: 0 auto; max-width: 14em;">O que compreendemos com os <em>estudos</em></h1>
+      </div>
+    </section>
+
+    <!-- 11 · QUOTE 1 PART 1 -->
+    <section class="slide slide-quote" data-section="O que compreendemos">
+      <div class="slide-container" style="display:flex;flex-direction:column;align-items:center;">
+        <div class="quote">
+          É próprio do homem <em>inquietar-se com o além-mundo</em>, com o seu destino ultrafísico, inquietude que se
+          aguça de vez em quando por efeito de algum padecimento ou por <em>encontros com enigmas que a inteligência tem
+            procurado em vão desvendar</em>. (...)
+        </div>
+        <div class="quote-source">O Espírito · pp. 23–24</div>
+      </div>
+    </section>
+
+    <!-- 12 · QUOTE 1 PART 2 -->
+    <section class="slide slide-quote" data-section="O que compreendemos">
+      <div class="slide-container" style="display:flex;flex-direction:column;align-items:center;">
+        <div class="quote small">
+          (...) Quem, senão o próprio <em>espírito</em>, promove tais desassossegos? Quem, senão ele, induz o homem a
+          <em>buscar o saber</em>? Mas não o saber comum, que atende às exigências da vida corrente. Referimo-nos ao que
+          <em>enriquece a consciência</em>, ao que transcende a esfera vulgar do mundo para dominar, na medida de sua
+          extensão, o imenso campo mental, o metafísico, povoado pelos <em>pensamentos e pelas grandes ideias</em>.
+        </div>
+        <div class="quote-source">O Espírito · pp. 23–24</div>
+      </div>
+    </section>
+
+    <!-- 13 · QUOTE 2 -->
+    <section class="slide slide-quote" data-section="O que compreendemos">
+      <div class="slide-container" style="display:flex;flex-direction:column;align-items:center;">
+        <div class="quote short">
+          Todos os seres humanos têm <em>inquietudes espirituais</em> em permanente insatisfação.
+        </div>
+        <div class="quote-source">Exegese · p. 93</div>
+      </div>
+    </section>
+
+    <!-- 14 · CONECTAR COM AS GRANDES INQUIETUDES -->
+    <section class="slide" data-section="O que compreendemos">
+      <div class="slide-container">
+        <div class="eyebrow">O que descobrimos</div>
+        <h2>Conectar com as <em>grandes inquietudes</em><br>e elevar as miras.</h2>
+      </div>
+    </section>
+
+    <!-- 15 · COM QUEM CONVERSAMOS -->
+    <section class="slide centered" data-section="O que compreendemos">
+      <div class="slide-container" style="text-align:center;">
+        <div class="eyebrow center">A audiência</div>
+        <h1>Conversar com <em>quem</em>?<br>Quem é a nossa audiência?</h1>
+      </div>
+    </section>
+
+    <!-- 16 · CONVERSAR COM O ESPÍRITO -->
+    <section class="slide" data-section="O que compreendemos">
+      <div class="slide-container">
+        <div class="eyebrow">A conversa certa</div>
+        <h2>Conversar com o <em>espírito</em>,<br>não com a personalidade.</h2>
+      </div>
+    </section>
+
+    <!-- 17 · PRIMEIRO / DEPOIS + AREIA MOVEDIÇA -->
+    <section class="slide" data-section="O que compreendemos">
+      <div class="slide-container">
+        <div class="eyebrow">Ordem de atenção</div>
+        <h2 style="font-size: 3.8vw; max-width: 18em;">Primeiro para quem já sabe — depois para quem ainda não sabe.
+        </h2>
+        <div class="audience-split">
+          <div class="audience-card">
+            <div class="order">Primeiro</div>
+            <h3>Para quem <em style="color:var(--gold-hi);">já sabe</em> o que está buscando</h3>
+          </div>
+          <div class="audience-arrow">→</div>
+          <div class="audience-card">
+            <div class="order">Depois</div>
+            <h3>Para quem <em style="color:var(--gold-hi);">ainda não sabe</em>, mas tem essa inquietude</h3>
+          </div>
+        </div>
+        <p class="sand-note">Imagem da areia movediça: primeiro os que estão menos afundados.</p>
+      </div>
+    </section>
+
+    <!-- 18 · APRESENTAR A ALTURA -->
+    <section class="slide" data-section="O que compreendemos">
+      <div class="slide-container">
+        <div class="eyebrow">A oportunidade do curso de informação</div>
+        <h2>Apresentar a oportunidade<br>à <em>altura</em> que ela merece.</h2>
+      </div>
+    </section>
+
+    <!-- 19 · EXEMPLOS - CAPTURAR A ATENÇÃO -->
+    <section class="slide" data-section="Exemplos e prática">
+      <div class="slide-container">
+        <div class="eyebrow">Exemplos e prática</div>
+        <h2>Como <em>capturar</em> a atenção?</h2>
+        <p class="lead"
+          style="margin-top: 5vh; font-family: var(--serif); font-style: italic; font-size: 2.2vw; color: var(--text);">
+          Cada um responder:</p>
+        <ul class="questions" style="margin-top: 2vh;">
+          <li>Por que começou a estudar?</li>
+          <li>Qual era o momento de vida?</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 20 · O PITCH LOGOSÓFICO - INTRO -->
+    <section class="slide centered" data-section="O Pitch Logosófico">
+      <div class="slide-container" style="text-align:center;">
+        <div class="eyebrow center">Exemplos e prática</div>
+        <h1>O <em>Pitch</em> Logosófico.</h1>
+        <p class="lead"
+          style="margin: 5vh auto 0; text-align: center; font-family: var(--serif); font-style: italic; font-size: 2.3vw; color: var(--text-soft); max-width: 26em;">
+          Como temos apresentado o Curso de Informação</p>
+      </div>
+    </section>
+
+    <!-- 21 · ROTEIRO R1 · FORMULÁRIO -->
+    <section class="slide centered" data-section="Roteiro do Pitch">
+      <div class="slide-container" style="text-align:center;">
+        <div class="roteiro-marker">Roteiro · 01 — Abertura</div>
+        <p class="roteiro-text">
+          Vocês receberam um <strong>formulário</strong> na pasta quando chegaram. Por gentileza, peguem esse formulário
+          agora.
+        </p>
+        <p class="roteiro-text medium" style="margin-top: 4vh;">
+          Todos têm caneta? Alguém está sem caneta?
+        </p>
+        <div class="stage-direction">(aguarda todos estarem com formulário e caneta na mão)</div>
+        <p class="roteiro-emphasis">Ótimo.</p>
+      </div>
+    </section>
+
+    <!-- 22 · ROTEIRO R2 · NÃO FOI TEORIA -->
+    <section class="slide centered" data-section="Roteiro do Pitch">
+      <div class="slide-container" style="text-align:center;">
+        <div class="roteiro-marker">Roteiro · 02 — A Prática</div>
+        <p class="roteiro-text small">
+          O que apresentamos aqui hoje <strong>não foi uma teoria</strong>. Foram resultados da aplicação dos
+          conhecimentos logosóficos na vida. Nós mostramos aqui <strong>efeitos concretos</strong> desses testes.
+        </p>
+      </div>
+    </section>
+
+    <!-- 23 · ROTEIRO R3 · TESTAR NA PRÓPRIA VIDA -->
+    <section class="slide centered" data-section="Roteiro do Pitch">
+      <div class="slide-container" style="text-align:center;">
+        <div class="roteiro-marker">Roteiro · 03 — A Proposta</div>
+        <p class="roteiro-text medium">
+          E a melhor alternativa que podemos oferecer a vocês é que possam fazer o mesmo: <strong>testar
+            diretamente</strong> esses conhecimentos na própria vida.
+        </p>
+      </div>
+    </section>
+
+    <!-- 24 · ROTEIRO R4 · A OPORTUNIDADE -->
+    <section class="slide centered" data-section="Roteiro do Pitch">
+      <div class="slide-container" style="text-align:center;">
+        <div class="roteiro-marker">Roteiro · 04 — A Oportunidade</div>
+        <p class="roteiro-text small">
+          De tempos em tempos, a Fundação Logosófica abre a oportunidade para que as pessoas que participaram das
+          atividades públicas possam iniciar um período de <strong>assessoramento individual</strong>.
+        </p>
+      </div>
+    </section>
+
+    <!-- 25 · ROTEIRO R5 · COMO FUNCIONA -->
+    <section class="slide centered" data-section="Roteiro do Pitch">
+      <div class="slide-container" style="text-align:center;">
+        <div class="roteiro-marker">Roteiro · 05 — Como Funciona</div>
+        <p class="roteiro-text small">
+          É um <strong>acompanhamento individual</strong>, feito por um docente habilitado da Fundação. Vocês terão
+          encontros <strong>semanais</strong>, em um dia e horário que façam sentido para a sua rotina. Esses encontros
+          são <strong>presenciais aqui na sede</strong> e têm duração aproximada de <strong>uma hora</strong>.
+        </p>
+      </div>
+    </section>
+
+    <!-- 26 · ROTEIRO R6 · BIBLIOGRAFIA + PERSONALIZAÇÃO -->
+    <section class="slide centered" data-section="Roteiro do Pitch">
+      <div class="slide-container" style="text-align:center;">
+        <div class="roteiro-marker">Roteiro · 06 — A Bibliografia</div>
+        <p class="roteiro-text small">
+          Nesses encontros, vocês terão acesso direto à <strong>bibliografia logosófica</strong> e aprenderão como
+          estudar e aplicar os conhecimentos na própria vida. Não é uma aula expositiva tradicional, nem algo coletivo.
+          É um <strong>trabalho personalizado</strong>, respeitando o ritmo, as inquietudes e as necessidades de cada
+          um.
+        </p>
+      </div>
+    </section>
+
+    <!-- 27 · ROTEIRO R7 · ESCOLHER O QUE TRABALHAR -->
+    <section class="slide centered" data-section="Roteiro do Pitch">
+      <div class="slide-container" style="text-align:center;">
+        <div class="roteiro-marker">Roteiro · 07 — Personalização</div>
+        <p class="roteiro-text small">
+          A bibliografia é ampla. São muitos conhecimentos. Cada pessoa vai poder escolher aquilo que deseja trabalhar:
+          <strong>questões internas, dificuldades, inquietudes, objetivos de superação, dúvidas mais profundas sobre a
+            própria vida</strong>.
+        </p>
+      </div>
+    </section>
+
+    <!-- 28 · ROTEIRO R8 · EXPERIMENTAÇÃO CONSCIENTE -->
+    <section class="slide centered" data-section="Roteiro do Pitch">
+      <div class="slide-container" style="text-align:center;">
+        <div class="roteiro-marker">Roteiro · 08 — Experimentação</div>
+        <p class="roteiro-text medium">
+          É um processo de <strong>experimentação consciente</strong>. Vocês estudam, aplicam, observam resultados e
+          voltam para conversar sobre isso.
+        </p>
+      </div>
+    </section>
+
+    <!-- 29 · ROTEIRO R9 · GRATUIDADE -->
+    <section class="slide centered" data-section="Roteiro do Pitch">
+      <div class="slide-container" style="text-align:center;">
+        <div class="roteiro-marker">Roteiro · 09 — Gratuidade</div>
+        <p class="roteiro-emphasis" style="font-size: 4.5vw; margin: 0 0 4vh;">Essa oportunidade é <em
+            style="color:var(--gold-hi);">gratuita</em>.</p>
+        <p class="roteiro-text small">
+          A Fundação <strong>não tem finalidade comercial</strong>. Não vendemos livros — inclusive, todos estão
+          disponíveis <strong>gratuitamente para download</strong>. A instituição existe justamente para cumprir esse
+          propósito: tornar esse conhecimento acessível a quem queira aplicá-lo seriamente.
+        </p>
+      </div>
+    </section>
+
+    <!-- 30 · ROTEIRO R10 · NÃO É PERMANENTE -->
+    <section class="slide centered" data-section="Roteiro do Pitch">
+      <div class="slide-container" style="text-align:center;">
+        <div class="roteiro-marker">Roteiro · 10 — Capacidade</div>
+        <p class="roteiro-text small">
+          Como o assessoramento é individual e realizado por docentes preparados, <strong>não é algo que fica aberto
+            permanentemente</strong>. A Fundação oferece essa possibilidade quando tem condições de atender
+          adequadamente cada pessoa.
+        </p>
+      </div>
+    </section>
+
+    <!-- 31 · ROTEIRO R11 · PREENCHAM O FORMULÁRIO -->
+    <section class="slide centered" data-section="Roteiro do Pitch">
+      <div class="slide-container" style="text-align:center;">
+        <div class="roteiro-marker">Roteiro · 11 — Chamada</div>
+        <p class="roteiro-text small">
+          Se vocês desejarem viver essa experiência, <strong>preencham agora o formulário</strong> com nome, telefone e
+          e-mail. A Fundação entrará em contato para agendar uma conversa inicial e combinar o melhor dia e horário.
+        </p>
+      </div>
+    </section>
+
+    <!-- 32 · ENCERRAMENTO -->
+    <section class="slide ending" data-section="Encerramento">
+      <div class="slide-container" style="text-align:center;">
+        <div class="eyebrow center">Encerramento</div>
+        <p class="ending-message">
+          Fundação <em>Logosófica</em> de Florianópolis
+        </p>
+      </div>
+    </section>
+
+  </div> <!-- /.slides -->
+
+  <script>
+    // ======================================================================
+    // SLIDE NAVIGATION
+    // ======================================================================
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    let currentSlide = 0;
+    let isTransitioning = false;
+
+    const currentEl = document.getElementById('currentSlide');
+    const totalEl = document.getElementById('totalSlides');
+    const sectionEl = document.getElementById('sectionTag');
+    const progressEl = document.getElementById('progressFill');
+
+    totalEl.textContent = String(totalSlides).padStart(2, '0');
+
+    function showSlide(index) {
+      if (isTransitioning) return;
+      index = Math.max(0, Math.min(totalSlides - 1, index));
+      if (index === currentSlide && slides[index].classList.contains('active')) return;
+
+      isTransitioning = true;
+
+      slides.forEach((s, i) => {
+        s.classList.toggle('active', i === index);
+      });
+
+      currentSlide = index;
+
+      currentEl.textContent = String(index + 1).padStart(2, '0');
+      const section = slides[index].dataset.section || '';
+      sectionEl.textContent = section;
+
+      const progress = ((index + 1) / totalSlides) * 100;
+      progressEl.style.width = progress + '%';
+
+      setTimeout(() => { isTransitioning = false; }, 450);
+    }
+
+    function nextSlide() { showSlide(currentSlide + 1); }
+    function prevSlide() { showSlide(currentSlide - 1); }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'Home') {
+        showSlide(0);
+      } else if (e.key === 'End') {
+        showSlide(totalSlides - 1);
+      }
+    });
+
+    document.getElementById('btnPrev').addEventListener('click', prevSlide);
+    document.getElementById('btnNext').addEventListener('click', nextSlide);
+
+    // Click left/right half to navigate
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.nav-arrow, .brand, .section-tag, .slide-count')) return;
+      if (e.target.closest('button, a, kbd')) return;
+      const half = window.innerWidth / 2;
+      if (e.clientX < half * 0.4) prevSlide();
+      else if (e.clientX > half * 1.6) nextSlide();
+    });
+
+    // Touch / swipe
+    let touchStartX = 0, touchStartY = 0;
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+      const dx = touchStartX - e.changedTouches[0].clientX;
+      const dy = touchStartY - e.changedTouches[0].clientY;
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 0) nextSlide();
+        else prevSlide();
+      }
+    }, { passive: true });
+
+    // Init
+    showSlide(0);
+
+    // Animation safety net — if CSS animations somehow don't play, the content
+    // should still become visible. We listen for the first user interaction or
+    // a timeout and force-apply the end state.
+    setTimeout(() => {
+      document.body.classList.add('anim-settled');
+    }, 3200);
+
+    // ======================================================================
+    // THREE.JS STARFIELD BACKGROUND
+    // ======================================================================
+    (function initBackground() {
+      if (typeof THREE === 'undefined') return;
+
+      const canvas = document.getElementById('bg-canvas');
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        alpha: true,
+        antialias: true,
+        powerPreference: 'high-performance'
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        3000
+      );
+      camera.position.z = 600;
+
+      // Far stars (bluish-white)
+      const farCount = 1400;
+      const farPos = new Float32Array(farCount * 3);
+      const farColors = new Float32Array(farCount * 3);
+      const farSizes = new Float32Array(farCount);
+
+      for (let i = 0; i < farCount; i++) {
+        const r = 900 + Math.random() * 800;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(2 * Math.random() - 1);
+
+        farPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+        farPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+        farPos[i * 3 + 2] = r * Math.cos(phi);
+
+        const brightness = 0.5 + Math.random() * 0.5;
+        farColors[i * 3] = brightness * 0.92;
+        farColors[i * 3 + 1] = brightness * 0.96;
+        farColors[i * 3 + 2] = brightness;
+
+        farSizes[i] = Math.random() * 1.6 + 0.4;
+      }
+
+      const farGeom = new THREE.BufferGeometry();
+      farGeom.setAttribute('position', new THREE.BufferAttribute(farPos, 3));
+      farGeom.setAttribute('color', new THREE.BufferAttribute(farColors, 3));
+
+      const farMat = new THREE.PointsMaterial({
+        size: 1.6,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.8,
+        sizeAttenuation: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      });
+
+      const farStars = new THREE.Points(farGeom, farMat);
+      scene.add(farStars);
+
+      // Nearer brighter stars (some gold tinted)
+      const nearCount = 220;
+      const nearPos = new Float32Array(nearCount * 3);
+      const nearColors = new Float32Array(nearCount * 3);
+
+      for (let i = 0; i < nearCount; i++) {
+        const r = 300 + Math.random() * 400;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(2 * Math.random() - 1);
+
+        nearPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+        nearPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+        nearPos[i * 3 + 2] = r * Math.cos(phi);
+
+        // Some stars are gold tinted
+        const isGold = Math.random() > 0.75;
+        if (isGold) {
+          nearColors[i * 3] = 1.0;
+          nearColors[i * 3 + 1] = 0.78;
+          nearColors[i * 3 + 2] = 0.4;
+        } else {
+          nearColors[i * 3] = 0.88;
+          nearColors[i * 3 + 1] = 0.92;
+          nearColors[i * 3 + 2] = 1.0;
+        }
+      }
+
+      const nearGeom = new THREE.BufferGeometry();
+      nearGeom.setAttribute('position', new THREE.BufferAttribute(nearPos, 3));
+      nearGeom.setAttribute('color', new THREE.BufferAttribute(nearColors, 3));
+
+      const nearMat = new THREE.PointsMaterial({
+        size: 3,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.9,
+        sizeAttenuation: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      });
+
+      const nearStars = new THREE.Points(nearGeom, nearMat);
+      scene.add(nearStars);
+
+      // Subtle sun glow at bottom (matches cover)
+      const glowGeom = new THREE.CircleGeometry(250, 64);
+      const glowMat = new THREE.MeshBasicMaterial({
+        color: 0xf5a623,
+        transparent: true,
+        opacity: 0.05,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      });
+      const glow = new THREE.Mesh(glowGeom, glowMat);
+      glow.position.set(0, -350, -200);
+      scene.add(glow);
+
+      // Mouse parallax
+      let mouseX = 0, mouseY = 0;
+      let targetX = 0, targetY = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        targetX = (e.clientX / window.innerWidth - 0.5) * 2;
+        targetY = (e.clientY / window.innerHeight - 0.5) * 2;
+      });
+
+      // Animation loop
+      const clock = new THREE.Clock();
+
+      function animate() {
+        requestAnimationFrame(animate);
+        const t = clock.getElapsedTime();
+
+        mouseX += (targetX - mouseX) * 0.04;
+        mouseY += (targetY - mouseY) * 0.04;
+
+        farStars.rotation.y = t * 0.012 + mouseX * 0.05;
+        farStars.rotation.x = t * 0.005 + mouseY * 0.03;
+
+        nearStars.rotation.y = -t * 0.02 + mouseX * 0.08;
+        nearStars.rotation.x = t * 0.01 + mouseY * 0.05;
+
+        // Gentle camera drift
+        camera.position.x = mouseX * 20;
+        camera.position.y = -mouseY * 20;
+        camera.lookAt(0, 0, 0);
+
+        // Subtle glow pulse
+        glow.scale.setScalar(1 + Math.sin(t * 0.5) * 0.08);
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+
+      // Resize
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    })();
+
+    // ======================================================================
+    // HIDE CURSOR AFTER INACTIVITY
+    // ======================================================================
+    let cursorTimeout;
+    document.addEventListener('mousemove', () => {
+      document.body.style.cursor = 'default';
+      clearTimeout(cursorTimeout);
+      cursorTimeout = setTimeout(() => {
+        document.body.style.cursor = 'none';
+      }, 3500);
+    });
+  </script>
+</body>
+
+</html>
