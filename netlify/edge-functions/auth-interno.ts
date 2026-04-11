@@ -1,6 +1,6 @@
 import type { Context } from "https://edge.netlify.com";
 
-const PASSWORD = "nucleos2026";
+const PASSWORD = "centenario";
 const COOKIE_NAME = "interno_auth";
 const TOKEN = "ok";
 
