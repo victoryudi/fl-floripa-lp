@@ -819,6 +819,54 @@
       font-weight: 600;
     }
 
+    .nucleo-plan-link-wrap {
+      grid-column: 1 / -1;
+      margin-top: 8px;
+      padding-top: 20px;
+      border-top: 1px dashed var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .nucleo-plan-link-wrap .meta {
+      font-size: 0.72rem;
+      color: var(--gray-400);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .nucleo-plan-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 22px;
+      background: var(--blue-deep);
+      color: var(--white);
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-radius: 100px;
+      border: 1px solid var(--blue-deep);
+      transition: transform 0.25s var(--transition), background 0.25s, box-shadow 0.25s;
+    }
+
+    .nucleo-plan-link:hover {
+      transform: translateY(-2px);
+      background: var(--amber);
+      border-color: var(--amber);
+      box-shadow: 0 8px 24px rgba(212, 148, 28, 0.28);
+    }
+
+    .nucleo-plan-link svg {
+      width: 14px;
+      height: 14px;
+      stroke-width: 2.4;
+    }
+
     /* ===== HEATMAP ===== */
     .heatmap-wrap {
       overflow-x: auto;
@@ -1904,7 +1952,7 @@
     // =========================================================================
     const nucleosData = [
       {
-        id: 'F2', type: 'f', name: 'Núcleo F2',
+        id: 'F2', type: 'f', name: 'Núcleo F2', planSlug: 'f2',
         dir: 'Lara, Ana Clara, Patrícia Soares, Marisa Celita', members: '12 condiscípulas',
         theme: 'Divina Arquitetura do Ser Humano',
         obj: 'Ampliar o estado de consciência sobre a concepção logosófica do que somos e como a Grande Impostura afetou a divina arquitetura.',
@@ -1915,7 +1963,7 @@
         refinement: { original: 'Pensamentos para mundo mental; estudo de concepções logosóficas.', enhanced: 'Preparar kit de materiais (apresentações, áudios) para apoiar os estudos em profundidade; o Setor orienta os facilitadores para as dinâmicas de estudo.', actions: 'Produzir kit inicial; agendar 1ª sessão teste.', days: 15 }
       },
       {
-        id: 'F3', type: 'f', name: 'Núcleo F3',
+        id: 'F3', type: 'f', name: 'Núcleo F3', planSlug: 'f3',
         dir: 'Juliana Paganelli, Luciana Caixeta, Bruna Bernardino, Victoria', members: '10 condiscípulas',
         theme: 'A Consciência e os Pensamentos',
         obj: 'Aprofundar o estudo da consciência e dos pensamentos, aplicando a parte transcendente e prática na vida.',
@@ -1926,7 +1974,7 @@
         refinement: { original: 'Reunião pais/adolescentes; intercâmbio escola-família; capacitação professores; atividade externa; apoio a jovens.', enhanced: 'O Setor organiza a logística (local, convites), prepara modelos de agendas e orientações para o trabalho com jovens e coordena o intercâmbio com o Colégio.', actions: 'Identificar 20 pais com afinidade; preparar modelo de orientação para capacitação.', days: 30 }
       },
       {
-        id: 'F4', type: 'f', name: 'Núcleo F4',
+        id: 'F4', type: 'f', name: 'Núcleo F4', planSlug: 'f4',
         dir: 'Não informada', members: 'Não especificados',
         theme: 'Os Grandes Objetivos da Logosofia (CIL par.19)',
         obj: 'Estudar os 7 grandes objetivos da Logosofia aplicados ao PTP de cada componente.',
@@ -1948,7 +1996,7 @@
         refinement: { original: 'Cursos/workshops, Reels/podcasts; reunião pais; quiosque em colégio.', enhanced: 'O Setor prepara o quiosque móvel padrão, orienta a equipe de intercâmbio e difunde os cursos por meio de comunicação centralizada.', actions: 'Realizar experiência do quiosque em um evento; planejar o 1º curso.', days: 30 }
       },
       {
-        id: 'F6', type: 'f', name: 'Núcleo F6',
+        id: 'F6', type: 'f', name: 'Núcleo F6', planSlug: 'f6',
         dir: 'Julieta, Rose M., Vanessa T., Lenara, Carina Retore', members: '6 condiscípulas',
         theme: 'Sistema Sensível',
         obj: 'Considerar o núcleo como corpo docente em embrião. Ampliar consciência via estudo do sistema sensível.',
@@ -1959,7 +2007,7 @@
         refinement: null
       },
       {
-        id: 'F7', type: 'f', name: 'Núcleo F7',
+        id: 'F7', type: 'f', name: 'Núcleo F7', planSlug: 'f7',
         dir: 'Débora Locks, Teresinha, Alessandra, Letícia Rosa', members: '8 condiscípulas (jovens, 3º ano)',
         theme: 'Sistema Mental: "Como é a minha mente?"',
         obj: 'Estudar o Sistema Mental de forma prática, solidificando o estudo da Grande Impostura.',
@@ -1970,7 +2018,7 @@
         refinement: { original: 'A planejar.', enhanced: 'O Setor propicia reunião de ideias com o núcleo, propõe modelo inspirado na experiência do F8 (podcasts/Reels) e disponibiliza orçamento inicial.', actions: 'Reunião de planejamento com o Setor.', days: 7 }
       },
       {
-        id: 'F8', type: 'f', name: 'Núcleo F8',
+        id: 'F8', type: 'f', name: 'Núcleo F8', planSlug: 'f8',
         dir: 'Rafaela Volpato, Pâmela Finkler, Elizabeth Pugiski, Fernanda Francio', members: '5 condiscípulas (recém-promovidas)',
         theme: 'Formação integral do discípulo',
         obj: 'Vinculação do conjunto; fixação na Obra; compreensão do método logosófico.',
@@ -1981,7 +2029,7 @@
         refinement: { original: 'Podcasts e Reels.', enhanced: 'O Setor orienta a produção (roteiros, edição), distribui o conteúdo pelos canais da Sede e acompanha o alcance semanalmente.', actions: 'Produzir 3 Reels iniciais; script para podcast.', days: 15 }
       },
       {
-        id: 'F9', type: 'f', name: 'Núcleo F9 (Professoras)',
+        id: 'F9', type: 'f', name: 'Núcleo F9 (Professoras)', planSlug: 'f9',
         dir: 'Vera, Elizabeth, Edna, Cecília', members: '10 condiscípulas',
         theme: 'Tertúlias + Divina Arquitetura (vinculado ao Colégio)',
         obj: 'Vincular objetivos do núcleo aos da Sede e da Obra nacional; estudo profundo e aplicação prática.',
@@ -1992,7 +2040,7 @@
         refinement: { original: 'Intercâmbio pendente em podcast.', enhanced: 'O Setor coordena a gravação conjunta, cuida da edição e da divulgação e integra a iniciativa com o trabalho do F8.', actions: 'Definir convidado; gravar episódio.', days: 20 }
       },
       {
-        id: 'M1', type: 'm', name: 'Núcleo M1',
+        id: 'M1', type: 'm', name: 'Núcleo M1', planSlug: 'm1',
         dir: 'Antônio Pereira Cândido, Deusdete França, Adriano Fagundes', members: '7 discípulos + 2 colaboradores',
         theme: 'Leis Universais (MVC cap.4)',
         obj: 'Compreender o mecanismo de atuação das Leis Universais e ampliar a vinculação à Obra.',
@@ -2003,7 +2051,7 @@
         refinement: { original: 'Mesas de amigos, reuniões informativas, podcasts, palestras, colóquios.', enhanced: 'O Setor disponibiliza plataforma de gravação para podcasts, coordena a agenda de palestras com convidados e difunde o conteúdo pelos canais unificados da Sede.', actions: 'Gravar o 1º podcast piloto; definir os temas para as palestras.', days: 25 }
       },
       {
-        id: 'M4', type: 'm', name: 'Núcleo M4',
+        id: 'M4', type: 'm', name: 'Núcleo M4', planSlug: 'm4',
         dir: 'Não informada', members: 'Não especificados',
         theme: 'Divina Arquitetura + Transcendência da Obra',
         obj: 'Ampliar consciência sobre a transcendência da Obra e estudar a divina arquitetura.',
@@ -2014,7 +2062,7 @@
         refinement: { original: 'Trabalhar energias internas de componentes interessados.', enhanced: 'O Setor identifica condiscípulos interessados por meio de formulário; propõe encontros de estudo aprofundado e acompanha a participação.', actions: 'Disponibilizar o formulário; identificar 10 componentes com disposição.', days: 10 }
       },
       {
-        id: 'Virtual', type: 'x', name: 'Núcleo Virtual',
+        id: 'Virtual', type: 'x', name: 'Núcleo Virtual', planSlug: 'virtual',
         dir: 'Não informada', members: 'Não especificados',
         theme: 'Divina Arquitetura do Ser Humano (5 ciclos)',
         obj: 'Estender o bem recebido por meio de atividades de difusão baseadas nos estudos.',
@@ -2025,7 +2073,7 @@
         refinement: { original: 'Expansão via livros infantis com Secretaria de Educação Águas Mornas.', enhanced: 'O Setor intermedia as reuniões institucionais, prepara materiais de divulgação (folhetos, vídeos curtos) e acompanha a distribuição.', actions: 'Agendar reunião com a Secretaria de Educação; preparar o folheto digital.', days: 20 }
       },
       {
-        id: 'Misto', type: 'x', name: 'Núcleo Misto',
+        id: 'Misto', type: 'x', name: 'Núcleo Misto', planSlug: 'misto',
         dir: 'Não informada', members: 'Não especificados',
         theme: 'Grandes Conceitos da Logosofia e Divina Arquitetura',
         obj: 'Ampliar consciência sobre a divina arquitetura e como a Grande Impostura afetou a humanidade.',
@@ -2159,6 +2207,13 @@
           <div class="refinement-deadline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Prazo: ${ref.days} dias</div>
         </div>` : ''}
         <div class="nucleo-tags">${n.tags.map(t => `<span class="nucleo-tag">${t}</span>`).join('')}</div>
+        ${n.planSlug ? `<div class="nucleo-plan-link-wrap">
+          <div class="meta">Documento original do núcleo, apresentado em formato visual</div>
+          <a class="nucleo-plan-link" href="nucleos/plano-${n.planSlug}.html">
+            Ver plano completo do ${n.id}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>` : ''}
       </div>
     </details>`;
       }).join('');
