@@ -1893,7 +1893,7 @@
       <div class="section-header reveal">
         <p class="eyebrow">Panorama dos núcleos e setores</p>
         <h2 class="section-title">Cada entidade com seu caminho de fortalecimento</h2>
-        <p class="section-subtitle">13 núcleos e 2 setores (Setor de Amparo à Expansão e Setor de Discípulos), seus temas/frentes de trabalho e as orientações propostas, com ações concretas e prazos. Os setores aparecem como entidades peer — participam das sinergias e das oportunidades de colaboração conjunta.</p>
+        <p class="section-subtitle">14 núcleos e 2 setores (Setor de Amparo à Expansão e Setor de Discípulos), seus temas/frentes de trabalho e as orientações propostas, com ações concretas e prazos. Os setores aparecem como entidades peer — participam das sinergias e das oportunidades de colaboração conjunta.</p>
       </div>
       <div class="nucleos-toolbar reveal" role="toolbar" aria-label="Filtros">
         <button class="filter-btn active" data-filter="all">Todos</button>
@@ -1912,7 +1912,7 @@
       <div class="section-header reveal">
         <p class="eyebrow">Convergências temáticas</p>
         <h2 class="section-title">Onde se encontra a unidade entre os núcleos</h2>
-        <p class="section-subtitle">Os 13 núcleos compartilham um eixo comum de estudo. O que se observa não é dispersão, mas sim convergência autêntica, com oportunidades concretas de colaboração e fortalecimento mútuo. Os setores (SAE e Setor de Discípulos), por sua natureza coordenadora, não aparecem neste mapa temático — sua atuação é transversal e pode ser vista nas seções de rede e sinergias.</p>
+        <p class="section-subtitle">Os 14 núcleos compartilham um eixo comum de estudo. O que se observa não é dispersão, mas sim convergência autêntica, com oportunidades concretas de colaboração e fortalecimento mútuo. Os setores (SAE e Setor de Discípulos), por sua natureza coordenadora, não aparecem neste mapa temático — sua atuação é transversal e pode ser vista nas seções de rede e sinergias.</p>
       </div>
       <div class="heatmap-wrap reveal">
         <table class="heatmap" id="heatmap"></table>
@@ -1955,7 +1955,7 @@
     <div class="container">
       <div class="section-header reveal">
         <p class="eyebrow">Sinergias e oportunidades</p>
-        <h2 class="section-title">8 frentes de colaboração conjunta</h2>
+        <h2 class="section-title">9 frentes de colaboração conjunta</h2>
         <p class="section-subtitle">Oportunidades que emergem naturalmente do trabalho dos núcleos e nas quais o Setor de Amparo à Expansão (SAE) e o Setor de Discípulos (SD) participam como entidades coordenadoras — cada sinergia abaixo identifica, junto dos núcleos, os setores envolvidos.</p>
       </div>
       <div class="synergy-grid" id="synergy-grid"></div>
@@ -2138,6 +2138,18 @@
         refinement: { original: 'Trabalhar energias internas de componentes interessados.', enhanced: 'O Setor identifica condiscípulos interessados por meio de formulário; propõe encontros de estudo aprofundado e acompanha a participação.', actions: 'Disponibilizar o formulário; identificar 10 componentes com disposição.', days: 10 }
       },
       {
+        id: 'M5', type: 'm', name: 'Núcleo M5', planSlug: 'm5',
+        dir: 'Bruno Kossatz (Diretor), Rogério Fleischhauer (Subdiretor), Marcelo Nunes (Secretário)',
+        members: '16 condiscípulos · reuniões terças 20h30–21h30; gabinete 19h45–20h30',
+        theme: 'A Divina Arquitetura do Ser Humano',
+        obj: 'Estudar a divina arquitetura a partir de quatro eixos: as duas mentes, o pensamento-autoridade, as faculdades da inteligência e a sensibilidade com suas faculdades sensíveis.',
+        study: '3 ciclos: (I) Verão — Bases para Sua Conduta, tertúlias do Setor Juvenil sobre o livro "O Espírito"; (II) Sistema Mental — pensamento-autoridade + faculdades da inteligência (13 reuniões dirigidas por gabinete e duplas); (III) Sistema Sensível — 7 faculdades sensíveis no 2º semestre',
+        goals: 'Estimular a docência dos componentes; aprofundar os sistemas mental e sensível; culminar em expansão externa no 2º semestre',
+        expansion: '2 reuniões informativas (sábados 11h, adaptadas de duplas de condiscípulos) + 2 episódios de podcast gravados nos estúdios da Voa Filmes (Capoeiras, via cond. Éder). Já realizada: "O Segredo das Oportunidades" (Marcelo Nunes, março/2026). Programada: reunião informativa de 09/05/2026 por Ricardo Moretto.',
+        readiness: 'high', tags: ['Div. Arquitetura', 'Sist. Mental', 'Sist. Sensível', 'Pens. Autoridade', 'Podcast', 'Reunião Informativa', 'BSC', 'Docência', 'Voa Filmes'],
+        refinement: { original: 'Duas reuniões informativas aos sábados e dois episódios de podcast gravados na Voa Filmes (Capoeiras), via cond. Éder.', enhanced: 'O SAE (Mídias + Performance) assume a linha editorial dos podcasts e o acompanhamento de alcance; a Comissão de Expansão ajuda a divulgar as reuniões informativas; a Voa Filmes pode tornar-se polo de gravação centralizado para todos os núcleos que produzem podcast (F4, F6, F8, F9, M1).', actions: 'Conectar a Voa Filmes ao fluxo central de produção de podcasts da Sede; preparar agenda editorial compartilhada; alinhar datas das duas reuniões informativas do 2º semestre.', days: 20 }
+      },
+      {
         id: 'Virtual', type: 'x', name: 'Núcleo Virtual', planSlug: 'virtual',
         dir: 'Não informada', members: 'Não especificados',
         theme: 'Divina Arquitetura do Ser Humano (5 ciclos)',
@@ -2163,12 +2175,12 @@
 
     const heatmapData = {
       themes: ['Divina Arquitetura', 'Pens. Autoridade', 'Plano Trab. Pessoal', 'BSC (Base de estudo)', 'Consciência', 'Sistema Mental', 'Sistema Sensível', 'Deficiências/Virtudes', 'Leis Universais', 'Método Logosófico', 'Inventário de Bens'],
-      nucleos: ['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'M1', 'M4', 'Virtual', 'Misto'],
+      nucleos: ['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'M1', 'M4', 'M5', 'Virtual', 'Misto'],
       matrix: [
-        [2, 2, 1, 1, 0, 1, 1, 1, 2, 1, 2, 2, 2], [2, 0, 1, 1, 0, 2, 2, 1, 2, 2, 2, 2, 2], [2, 1, 1, 2, 1, 2, 2, 2, 2, 1, 2, 2, 1],
-        [2, 2, 2, 1, 0, 2, 2, 2, 2, 0, 0, 2, 2], [2, 1, 2, 1, 0, 1, 1, 1, 2, 1, 1, 2, 1], [1, 1, 1, 1, 0, 1, 2, 1, 2, 2, 1, 2, 2],
-        [1, 1, 1, 1, 0, 2, 1, 1, 2, 1, 1, 2, 1], [2, 1, 1, 1, 0, 1, 1, 2, 2, 1, 1, 2, 2], [2, 0, 0, 2, 0, 0, 0, 1, 1, 2, 1, 1, 0],
-        [1, 1, 1, 2, 0, 1, 2, 2, 1, 1, 1, 2, 2], [0, 0, 0, 1, 0, 2, 0, 2, 1, 0, 2, 2, 0]
+        [2, 2, 1, 1, 0, 1, 1, 1, 2, 1, 2, 2, 2, 2], [2, 0, 1, 1, 0, 2, 2, 1, 2, 2, 2, 2, 2, 2], [2, 1, 1, 2, 1, 2, 2, 2, 2, 1, 2, 0, 2, 1],
+        [2, 2, 2, 1, 0, 2, 2, 2, 2, 0, 0, 2, 2, 2], [2, 1, 2, 1, 0, 1, 1, 1, 2, 1, 1, 0, 2, 1], [1, 1, 1, 1, 0, 1, 2, 1, 2, 2, 1, 2, 2, 2],
+        [1, 1, 1, 1, 0, 2, 1, 1, 2, 1, 1, 2, 2, 1], [2, 1, 1, 1, 0, 1, 1, 2, 2, 1, 1, 0, 2, 2], [2, 0, 0, 2, 0, 0, 0, 1, 1, 2, 1, 0, 1, 0],
+        [1, 1, 1, 2, 0, 1, 2, 2, 1, 1, 1, 1, 2, 2], [0, 0, 0, 1, 0, 2, 0, 2, 1, 0, 2, 0, 2, 0]
       ]
     };
 
@@ -2179,9 +2191,9 @@
         action: 'Calendário unificado, identidade visual única e apoio editorial pelo SAE'
       },
       {
-        num: '02', title: 'Central de Podcasts', nucleos: [{ id: 'F4', t: 'f' }, { id: 'F6', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'F9', t: 'f' }, { id: 'M1', t: 'm' }, { id: 'SAE', t: 's' }],
-        desc: '5 núcleos mencionam podcasts como ação de expansão. A Comissão de Mídias (SAE) centraliza a produção, edição e distribuição sob linha editorial unificada; a Comissão de Performance acompanha alcance e métricas.',
-        action: 'Fluxo de produção centralizado pelo SAE com calendário editorial unificado'
+        num: '02', title: 'Central de Podcasts · Estúdio Voa Filmes', nucleos: [{ id: 'F4', t: 'f' }, { id: 'F6', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'F9', t: 'f' }, { id: 'M1', t: 'm' }, { id: 'M5', t: 'm' }, { id: 'SAE', t: 's' }],
+        desc: '6 núcleos mencionam podcasts como ação de expansão. O M5 disponibiliza os estúdios da Voa Filmes (Capoeiras, via cond. Éder) para 2 episódios próprios — um ativo estratégico para centralizar a produção de toda a Sede. A Comissão de Mídias (SAE) assume a linha editorial unificada; a de Performance acompanha alcance e métricas.',
+        action: 'Adotar a Voa Filmes como polo de gravação da Sede; calendário editorial unificado sob a Mídias (SAE)'
       },
       {
         num: '03', title: 'Banco de Artigos', nucleos: [{ id: 'F8', t: 'f' }, { id: 'M1', t: 'm' }, { id: 'Virtual', t: 'x' }, { id: 'F1', t: 'f' }, { id: 'SAE', t: 's' }],
@@ -2195,12 +2207,12 @@
       },
       {
         num: '05', title: 'Plano de Trabalho Pessoal', nucleos: [{ id: 'F1', t: 'f' }, { id: 'F4', t: 'f' }, { id: 'F6', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'F9', t: 'f' }, { id: 'Misto', t: 'x' }, { id: 'SD', t: 's' }, { id: 'SAE', t: 's' }],
-        desc: 'Todos os 13 núcleos incluem PTP. O Setor de Discípulos acompanha a formação e a coerência do processo; a Comissão de Assessoramento Docente (SAE) fornece modelos e orientações metodológicas. F1 tem o PTP como ponto de partida; F4 como eixo central; F6, F9, Misto com acompanhamento a cada 2 meses; F8 com acompanhamento individual.',
+        desc: 'A maioria dos núcleos inclui PTP no planejamento 2026 — M5 é a exceção notável, focado integralmente na divina arquitetura (três sistemas). O Setor de Discípulos acompanha a formação e a coerência do processo; a Comissão de Assessoramento Docente (SAE) fornece modelos e orientações metodológicas. F1 tem o PTP como ponto de partida; F4 como eixo central; F6, F9, Misto com acompanhamento a cada 2 meses; F8 com acompanhamento individual.',
         action: 'Encontro de troca coordenado por SD + SAE sobre o acompanhamento do PTP'
       },
       {
-        num: '06', title: 'Simpósio Pensamento Autoridade', nucleos: [{ id: 'M1', t: 'm' }, { id: 'F1', t: 'f' }, { id: 'F6', t: 'f' }, { id: 'F7', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'F9', t: 'f' }, { id: 'M4', t: 'm' }, { id: 'Misto', t: 'x' }, { id: 'SAE', t: 's' }, { id: 'SD', t: 's' }],
-        desc: '8 dos 13 núcleos estudam pensamento-autoridade (F1 dedica-lhe o 4º encontro do 2º ciclo). O M1 propõe o simpósio; Comissões do Summit e de Assessoramento Docente (SAE) organizam o evento; Setor de Discípulos referenda o alcance formativo.',
+        num: '06', title: 'Simpósio Pensamento Autoridade', nucleos: [{ id: 'M1', t: 'm' }, { id: 'F1', t: 'f' }, { id: 'F6', t: 'f' }, { id: 'F7', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'F9', t: 'f' }, { id: 'M4', t: 'm' }, { id: 'M5', t: 'm' }, { id: 'Misto', t: 'x' }, { id: 'SAE', t: 's' }, { id: 'SD', t: 's' }],
+        desc: '9 dos 14 núcleos estudam pensamento-autoridade (F1 dedica-lhe o 4º encontro do 2º ciclo; M5 dedica-lhe 2 reuniões dirigidas pelo gabinete no 1º semestre). O M1 propõe o simpósio; Comissões do Summit e de Assessoramento Docente (SAE) organizam o evento; Setor de Discípulos referenda o alcance formativo.',
         action: 'Oferecer o simpósio como atividade aberta, organizada por SAE + SD'
       },
       {
@@ -2209,19 +2221,24 @@
         action: 'Encontro coletivo coordenado por SD + SAE sobre o inventário'
       },
       {
-        num: '08', title: 'Campanha Nacional BSC', nucleos: [{ id: 'F4', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'F9', t: 'f' }, { id: 'F1', t: 'f' }, { id: 'SAE', t: 's' }],
-        desc: 'BSC aparece no ciclo de verão de praticamente todos os núcleos (inclusive F1 no Ciclo I com as tertúlias "Conselhos do Maestro"). É o livro central do Clube do Livro (F4, F8) e dos cartazes com QR Code (F9). Coordenação da difusão pela Comissão de Mídias e Expansão (SAE).',
+        num: '08', title: 'Campanha Nacional BSC', nucleos: [{ id: 'F4', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'F9', t: 'f' }, { id: 'F1', t: 'f' }, { id: 'M5', t: 'm' }, { id: 'SAE', t: 's' }],
+        desc: 'BSC aparece no ciclo de verão de praticamente todos os núcleos (F1 com as tertúlias "Conselhos do Maestro"; M5 com as tertúlias do Setor Juvenil sobre o livro "O Espírito"). É o livro central do Clube do Livro (F4, F8) e dos cartazes com QR Code (F9). Coordenação da difusão pela Comissão de Mídias e Expansão (SAE).',
         action: 'Fortalecer a difusão da edição comemorativa do BSC, coordenada pelo SAE'
+      },
+      {
+        num: '09', title: 'Reuniões Informativas aos sábados', nucleos: [{ id: 'M5', t: 'm' }, { id: 'M1', t: 'm' }, { id: 'F2', t: 'f' }, { id: 'SAE', t: 's' }],
+        desc: 'O M5 planeja 2 reuniões informativas aos sábados (11h) no 2º semestre, adaptadas dos estudos do conjunto e dirigidas por duplas de condiscípulos — além de uma já realizada ("O Segredo das Oportunidades", Marcelo Nunes, março/2026) e outra programada para 09/05 (Ricardo Moretto). F2 prevê pelo menos uma atividade própria para externos. M1 planeja "reunião de amigos". Oportunidade de calendário unificado de reuniões informativas da Sede.',
+        action: 'Calendário unificado de reuniões informativas aos sábados, coordenado pela Comissão de Expansão (SAE)'
       },
     ];
 
 
     const recsData = [
-      { num: '01', title: 'Grupo de trabalho "Conteúdo para Difusão"', desc: 'Reunir F4, F6, F8, F9 e M1 sob a coordenação da Comissão de Mídias do SAE, com a Comissão de Revisão assegurando fidelidade editorial e a de Performance acompanhando alcance. Fluxo de produção centralizado.', nucleos: 'SAE · F4 + F6 + F8 + F9 + M1' },
+      { num: '01', title: 'Central de Podcasts · Estúdio Voa Filmes', desc: 'Adotar os estúdios da Voa Filmes (Capoeiras, disponibilizados pelo cond. Éder/M5) como polo de gravação centralizado para todos os núcleos que produzem podcast (F4, F6, F8, F9, M1, M5). A Comissão de Mídias do SAE define linha editorial; Revisão assegura fidelidade; Performance acompanha alcance.', nucleos: 'SAE · M5 (Voa Filmes) · F4 + F6 + F8 + F9 + M1' },
       { num: '02', title: 'Programa "Logosofia nas Escolas"', desc: 'Articular F1 (Páginas da Vida), F9 (cartazes com QR Code), F3 (Adolescentes e capacitação), F5 (quiosque), Virtual (livros infantis) e M1 (palestras) sob a coordenação da Comissão de Expansão e Assessoramento Técnico (SAE). Formação acompanhada pelo Setor de Discípulos.', nucleos: 'SAE · SD · F1 + F9 + F3 + F5 + Virtual + M1' },
-      { num: '03', title: 'Simpósio aberto sobre o Pensamento-Autoridade', desc: 'Oferecer o simpósio previsto pelo M1 como atividade aberta a toda a Sede (8 dos 13 núcleos estudam este tema). Organização pela Comissão do Summit e pela Comissão de Assessoramento Docente (SAE), com o Setor de Discípulos referendando o alcance formativo.', nucleos: 'SAE (Summit + Ass. Docente) · SD · M1 → Todos' },
-      { num: '04', title: 'Clube do Livro com calendário unificado', desc: 'Unificar formato e calendário entre F4 e F8 (F4 já conta com 3 datas em abr-jun). A Comissão de Mídias do SAE assume a divulgação; a Comissão de Revisão, o material editorial.', nucleos: 'SAE · F4 + F8' },
-      { num: '05', title: 'Intercâmbio sobre PTP e Inventário de Bens', desc: 'Encontro transversal coordenado pelo Setor de Discípulos e apoiado pela Comissão de Assessoramento Docente (SAE), reunindo experiências de F1 (plano individual), F4 (eixo central), F6, F8, F9, M4, Virtual e Misto.', nucleos: 'SD · SAE · Núcleos com PTP e Inventário' },
+      { num: '03', title: 'Simpósio aberto sobre o Pensamento-Autoridade', desc: 'Oferecer o simpósio previsto pelo M1 como atividade aberta a toda a Sede (9 dos 14 núcleos estudam este tema — M5 dedica-lhe 2 reuniões em 2026). Organização pela Comissão do Summit e pela Comissão de Assessoramento Docente (SAE), com o Setor de Discípulos referendando o alcance formativo.', nucleos: 'SAE (Summit + Ass. Docente) · SD · M1 + M5 → Todos' },
+      { num: '04', title: 'Calendário unificado: Clube do Livro + Reuniões Informativas', desc: 'Unificar o calendário de atividades externas do 2º semestre: Clube do Livro (F4 + F8), Reuniões Informativas aos sábados (M5 com 2, F2 com 1, M1 com reunião de amigos). A Comissão de Mídias divulga; a de Revisão cuida do material editorial.', nucleos: 'SAE · F4 + F8 + M5 + F2 + M1' },
+      { num: '05', title: 'Intercâmbio sobre os três sistemas da Divina Arquitetura', desc: 'O M5 cobre os três sistemas (mental, sensível, instintivo) em ciclos dedicados. Oportunidade para encontro de troca com F2, F6 (Sistema Sensível), F7 (Sistema Mental), Virtual, Misto, M4 e F9 — todos com estudo da Divina Arquitetura. Coordenação SD + Comissão de Assessoramento Docente (SAE).', nucleos: 'SD · SAE · M5 + F2 + F6 + F7 + F9 + M4 + Virtual + Misto' },
     ];
 
     // Network connection data with reasons
@@ -2238,6 +2255,7 @@
       { from: 'SAE', to: 'M4', reason: 'Formulário para identificar componentes; encontros de estudo aprofundado' },
       { from: 'SAE', to: 'Virtual', reason: 'Intermediação com Secretaria de Educação; materiais de divulgação' },
       { from: 'SAE', to: 'F4', reason: 'Apoio editorial ao Clube do Livro' },
+      { from: 'SAE', to: 'M5', reason: 'Mídias + Performance para os 2 podcasts gravados na Voa Filmes e divulgação das 2 reuniões informativas' },
       { from: 'SAE', to: 'SD', reason: 'Articulação entre setores — difusão + formação discipular' },
       // Setor de Discípulos — conecta-se aos núcleos cujos planos recebe
       { from: 'SD', to: 'F1', reason: 'Plano F-1/2026 apresentado ao Setor de Discípulos' },
@@ -2245,6 +2263,7 @@
       { from: 'SD', to: 'F8', reason: 'Formação integral do discípulo (núcleo recém-promovido)' },
       { from: 'SD', to: 'M1', reason: 'Estudo das Leis Universais e capacitação docente' },
       { from: 'SD', to: 'F6', reason: 'Núcleo como corpo docente em embrião' },
+      { from: 'SD', to: 'M5', reason: 'Formação discipular via docência compartilhada e três sistemas da divina arquitetura' },
       // Conexões entre núcleos (anteriores)
       { from: 'F1', to: 'F9', reason: 'Escolas, Pedagogia Logosófica, Páginas da Vida' },
       { from: 'F1', to: 'F3', reason: 'Setor Infantil, capacitação para Escola e Família' },
@@ -2269,6 +2288,17 @@
       { from: 'F6', to: 'F7', reason: 'Sistema Sensível/Mental, Pensamento Autoridade' },
       { from: 'M1', to: 'M4', reason: 'Pensamento Autoridade, Leis' },
       { from: 'F6', to: 'Virtual', reason: 'Difusão, Sistema Sensível' },
+      // M5 — Divina Arquitetura, Sistemas Mental e Sensível, Podcasts
+      { from: 'M5', to: 'F2', reason: 'Divina Arquitetura, BSC, tertúlias' },
+      { from: 'M5', to: 'F9', reason: 'Divina Arquitetura, tertúlias, docência rotativa' },
+      { from: 'M5', to: 'Virtual', reason: 'Divina Arquitetura em 3 sistemas (mental, sensível, instintivo)' },
+      { from: 'M5', to: 'Misto', reason: 'Divina Arquitetura, BSC' },
+      { from: 'M5', to: 'M4', reason: 'Divina Arquitetura + Pensamento-autoridade' },
+      { from: 'M5', to: 'F6', reason: 'Sistema Sensível e faculdades sensíveis' },
+      { from: 'M5', to: 'F7', reason: 'Sistema Mental e faculdades da inteligência' },
+      { from: 'M5', to: 'M1', reason: 'Reuniões informativas + podcasts + colóquios — formatos de difusão' },
+      { from: 'M5', to: 'F8', reason: 'Podcasts e conteúdo digital — linha editorial comum' },
+      { from: 'M5', to: 'F4', reason: 'Podcasts pós-Clube do Livro — produção compartilhada' },
     ];
 
     // =========================================================================
@@ -2465,7 +2495,7 @@
         hg.addColorStop(0, 'rgba(212,148,28,0.08)'); hg.addColorStop(1, 'rgba(212,148,28,0)');
         ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(cx, cy, 60, 0, Math.PI * 2); ctx.fill();
 
-        // Hub label — Sede de Florianópolis (conjunto dos 13 núcleos + 2 setores)
+        // Hub label — Sede de Florianópolis (conjunto dos 14 núcleos + 2 setores)
         ctx.font = '600 9px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillStyle = 'rgba(240,185,78,0.5)'; ctx.fillText('SEDE', cx, cy - 6); ctx.fillText('FLORIPA', cx, cy + 6);
 
