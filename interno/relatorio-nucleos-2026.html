@@ -34,6 +34,10 @@
       --green: #2D6A4F;
       --green-light: #40916C;
       --green-soft: rgba(45, 106, 79, 0.08);
+      --violet: #6B4E8F;
+      --violet-light: #8A6FB0;
+      --violet-soft: rgba(107, 78, 143, 0.1);
+      --violet-deep: #4C2A85;
       --white: #FFFFFF;
       --off-white: #F7F5F0;
       --gray-50: #FAFAF8;
@@ -597,6 +601,15 @@
       transition: box-shadow 0.3s var(--transition), border-color 0.3s;
     }
 
+    .nucleo-item[data-type="s"] {
+      border-left: 4px solid var(--violet-light);
+      background: linear-gradient(90deg, var(--violet-soft) 0%, var(--white) 28%);
+    }
+
+    .nucleo-item[data-type="s"] .nucleo-id {
+      color: var(--violet-deep);
+    }
+
     .nucleo-item:hover {
       box-shadow: var(--shadow-md);
       border-color: transparent;
@@ -654,6 +667,11 @@
       color: var(--green);
     }
 
+    .nucleo-type-pill.s {
+      background: var(--violet-soft);
+      color: var(--violet-deep);
+    }
+
     .nucleo-theme {
       font-size: 1rem;
       font-weight: 800;
@@ -698,6 +716,18 @@
     .nucleo-readiness.open {
       background: rgba(0, 0, 0, 0.02);
       color: var(--gray-400);
+    }
+
+    .nucleo-channel {
+      font-size: 0.62rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 100px;
+      background: rgba(45, 106, 79, 0.1);
+      color: var(--green);
+      border: 1px dashed rgba(45, 106, 79, 0.4);
     }
 
     .nucleo-toggle {
@@ -1150,6 +1180,11 @@
     .synergy-pill.x {
       background: var(--green-soft);
       color: var(--green);
+    }
+
+    .synergy-pill.s {
+      background: var(--violet-soft);
+      color: var(--violet-deep);
     }
 
     .synergy-desc {
@@ -1773,7 +1808,7 @@
       </div>
       <nav class="header-nav" id="header-nav">
         <a href="#vision" data-section="vision">Visão</a>
-        <a href="#nucleos" data-section="nucleos">Núcleos</a>
+        <a href="#nucleos" data-section="nucleos">Núcleos &amp; Setores</a>
         <a href="#convergence" data-section="convergence">Convergências</a>
         <a href="#network" data-section="network">Rede</a>
         <a href="#synergies" data-section="synergies">Sinergias</a>
@@ -1785,7 +1820,7 @@
   <nav id="side-nav">
     <button class="side-dot active" data-target="hero" data-label="Início"></button>
     <button class="side-dot" data-target="vision" data-label="Visão"></button>
-    <button class="side-dot" data-target="nucleos" data-label="Núcleos"></button>
+    <button class="side-dot" data-target="nucleos" data-label="Núcleos &amp; Setores"></button>
     <button class="side-dot" data-target="convergence" data-label="Convergências"></button>
     <button class="side-dot" data-target="network" data-label="Rede"></button>
     <button class="side-dot" data-target="synergies" data-label="Sinergias"></button>
@@ -1856,12 +1891,13 @@
   <section id="nucleos" class="section">
     <div class="container">
       <div class="section-header reveal">
-        <p class="eyebrow">Panorama dos núcleos</p>
-        <h2 class="section-title">Cada núcleo com seu caminho de fortalecimento</h2>
-        <p class="section-subtitle">12 núcleos, seus temas de estudo e as orientações propostas pelo Setor de Amparo à Expansão com ações concretas e prazos.</p>
+        <p class="eyebrow">Panorama dos núcleos e setores</p>
+        <h2 class="section-title">Cada entidade com seu caminho de fortalecimento</h2>
+        <p class="section-subtitle">13 núcleos e 2 setores (Setor de Amparo à Expansão e Setor de Discípulos), seus temas/frentes de trabalho e as orientações propostas, com ações concretas e prazos. Os setores aparecem como entidades peer — participam das sinergias e das oportunidades de colaboração conjunta.</p>
       </div>
       <div class="nucleos-toolbar reveal" role="toolbar" aria-label="Filtros">
         <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="s">Setores</button>
         <button class="filter-btn" data-filter="f">Femininos</button>
         <button class="filter-btn" data-filter="m">Masculinos</button>
         <button class="filter-btn" data-filter="x">Misto / Virtual</button>
@@ -1876,7 +1912,7 @@
       <div class="section-header reveal">
         <p class="eyebrow">Convergências temáticas</p>
         <h2 class="section-title">Onde se encontra a unidade entre os núcleos</h2>
-        <p class="section-subtitle">Os 12 núcleos compartilham um eixo comum de estudo. O que se observa não é dispersão, mas sim convergência autêntica, com oportunidades concretas de colaboração e fortalecimento mútuo.</p>
+        <p class="section-subtitle">Os 13 núcleos compartilham um eixo comum de estudo. O que se observa não é dispersão, mas sim convergência autêntica, com oportunidades concretas de colaboração e fortalecimento mútuo. Os setores (SAE e Setor de Discípulos), por sua natureza coordenadora, não aparecem neste mapa temático — sua atuação é transversal e pode ser vista nas seções de rede e sinergias.</p>
       </div>
       <div class="heatmap-wrap reveal">
         <table class="heatmap" id="heatmap"></table>
@@ -1888,9 +1924,8 @@
     <div class="container">
       <div class="section-header reveal">
         <p class="eyebrow">Rede de colaboração</p>
-        <h2 class="section-title">Visualize as conexões entre os núcleos</h2>
-        <p class="section-subtitle">Clique em um núcleo para ver com quais outros ele se conecta e por quê. Clique
-          novamente para desselecionar.</p>
+        <h2 class="section-title">Visualize as conexões entre núcleos e setores</h2>
+        <p class="section-subtitle">Clique em qualquer núcleo ou setor para ver com quais outros ele se conecta e por quê. Os setores (SAE e SD) aparecem como entidades peer na mesma rede — visíveis pelo tom violeta — e articulam-se diretamente com os núcleos que apoiam.</p>
       </div>
       <div class="net-wrap reveal">
         <div class="net-canvas-wrap">
@@ -1900,13 +1935,16 @@
         <div class="net-panel" id="net-panel"></div>
         <div class="network-legend">
           <div class="legend-item">
-            <div class="legend-dot" style="background:var(--amber)"></div> Feminino
+            <div class="legend-dot" style="background:var(--amber)"></div> Núcleo Feminino
           </div>
           <div class="legend-item">
-            <div class="legend-dot" style="background:var(--blue-mid)"></div> Masculino
+            <div class="legend-dot" style="background:var(--blue-mid)"></div> Núcleo Masculino
           </div>
           <div class="legend-item">
-            <div class="legend-dot" style="background:var(--green-light)"></div> Misto / Virtual
+            <div class="legend-dot" style="background:var(--green-light)"></div> Núcleo Misto / Virtual
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:var(--violet-light)"></div> Setor
           </div>
         </div>
       </div>
@@ -1917,8 +1955,8 @@
     <div class="container">
       <div class="section-header reveal">
         <p class="eyebrow">Sinergias e oportunidades</p>
-        <h2 class="section-title">8 frentes de colaboração entre núcleos</h2>
-        <p class="section-subtitle">Oportunidades que emergem naturalmente do trabalho dos núcleos e que o Setor de Amparo à Expansão pode ajudar a coordenar.</p>
+        <h2 class="section-title">8 frentes de colaboração conjunta</h2>
+        <p class="section-subtitle">Oportunidades que emergem naturalmente do trabalho dos núcleos e nas quais o Setor de Amparo à Expansão (SAE) e o Setor de Discípulos (SD) participam como entidades coordenadoras — cada sinergia abaixo identifica, junto dos núcleos, os setores envolvidos.</p>
       </div>
       <div class="synergy-grid" id="synergy-grid"></div>
     </div>
@@ -1928,8 +1966,8 @@
     <div class="container">
       <div class="section-header reveal">
         <p class="eyebrow">Próximos passos</p>
-        <h2 class="section-title">5 ações prioritárias</h2>
-        <p class="section-subtitle">Ações que mais fortalecem o esforço coletivo do plano, priorizadas pelo alcance transversal e pela prontidão de execução.</p>
+        <h2 class="section-title">5 ações prioritárias conjuntas</h2>
+        <p class="section-subtitle">Ações que mais fortalecem o esforço coletivo do plano, priorizadas pelo alcance transversal e pela prontidão de execução. Cada uma explicita os núcleos participantes e os setores que coordenam (SAE e/ou SD).</p>
       </div>
       <div class="recs-grid" id="recs-grid"></div>
     </div>
@@ -1951,6 +1989,44 @@
     // DATA
     // =========================================================================
     const nucleosData = [
+      {
+        id: 'SAE', type: 's', name: 'Setor de Amparo à Expansão', planSlug: 'sae',
+        dir: 'Coordenação geral · 7 Comissões',
+        members: 'Cerca de 30 condiscípulos distribuídos em 7 Comissões (Estratégias Digitais · Mídias · Performance · Expansão e Ass. Técnico · Assessoramento Docente · Revisão · Summit)',
+        theme: 'Atração consciente e apoio aos núcleos',
+        obj: 'Conceber e sustentar, com visão e estratégia, a atração consciente de seres capacitados, amparando os núcleos com logística, produção de materiais, treinamento e difusão.',
+        study: 'Sete comissões especializadas articuladas entre si: Estratégias Digitais, Mídias, Performance, Expansão e Assessoramento Técnico, Assessoramento Docente, Revisão, Summit — cada uma com missão própria e ensinamento-guia.',
+        goals: 'Ampliar alcance com unidade editorial; centralizar produção de conteúdo; organizar presença institucional e educacional; sustentar a sequência de eventos até o Summit.',
+        expansion: 'Presente em todas as frentes transversais: Conteúdo para Difusão · Logosofia nas Escolas · Clube do Livro/BSC · Simpósio Pensamento-Autoridade · apoio ao PTP e Inventário · Summit.',
+        readiness: 'high',
+        tags: ['Coordenação', 'Estratégias Digitais', 'Mídias', 'Performance', 'Expansão', 'Ass. Docente', 'Revisão', 'Summit'],
+        refinement: null
+      },
+      {
+        id: 'SD', type: 's', name: 'Setor de Discípulos', planSlug: 'setor-discipulos',
+        dir: 'Coordenação do Setor de Discípulos',
+        members: 'Referencial para todos os núcleos de discípulos da Sede',
+        theme: 'Coordenação da formação discipular',
+        obj: 'Acompanhar a formação dos discípulos por meio da integração dos planos dos núcleos e da continuidade do Processo de Evolução Consciente.',
+        study: 'Consolidação dos planos dos núcleos; apoio à continuidade do estudo da consciência e ao ciclo das deficiências; articulação com o SAE.',
+        goals: 'Receber e integrar os planos dos núcleos; sustentar a coerência do processo formativo; articular frentes compartilhadas com o SAE.',
+        expansion: 'Frentes compartilhadas com o SAE: PTP · Inventário de Bens · Simpósio Pensamento-Autoridade · Páginas da Vida e Pedagogia Logosófica.',
+        readiness: 'medium',
+        tags: ['Coordenação', 'Plano dos núcleos', 'PEC', 'Formação Discipular', 'Articulação SAE'],
+        refinement: null
+      },
+      {
+        id: 'F1', type: 'f', name: 'Núcleo F1', planSlug: 'f1',
+        dir: 'Equipe Diretora F-1/2026 (Elizabete, Vera e condiscípulas)', members: 'Equipe ativa; 5 componentes colaboram na CRD; 6 no Projeto Páginas da Vida',
+        theme: 'A Consciência — onde estou e onde quero chegar',
+        obj: 'Dar continuidade, em 2026, ao estudo do Processo de Evolução Consciente e, no 3º ciclo, iniciar o estudo das deficiências e a recuperação das funções da Divina Arquitetura.',
+        study: 'Ciclo 1 (verão): tertúlias "Conselhos do Maestro" (BSC). Ciclo 2: Consciência (faculdades, querer, pensamento autoridade, vontade e estímulos, Leis Universais, consequências do enriquecimento da consciência, Pedra Mental, consciência e existência). Ciclo 3: Recuperação das funções da Divina Arquitetura (foco nas deficiências).',
+        goals: 'Elaborar plano individual de trabalho pessoal; elevar o estado de consciência; incursionar no mundo transcendente; perpetuar a individualidade; aniversário da Sede.',
+        expansion: 'Colaboração na Comissão de Recursos Didáticos (5 componentes ativas; 3 com temas nas reuniões de 4ª pela manhã e no Encontro Escola e Família). Projeto Páginas da Vida (Setor do Livro + Setor Infantil): contação de histórias nas escolas com 6 componentes. Encontro com os Avós (2º semestre, café/reunião com a cond. Ana Maria). Artigos/narrativas a partir da Oficina das Narrativas (2024).',
+        readiness: 'high', tags: ['Consciência', 'PEC', 'Divina Arquitetura', 'Pensamento Autoridade', 'Recursos Didáticos', 'Páginas da Vida', 'Setor Infantil', 'Avós', 'BSC'],
+        submittedVia: 'Setor de Discípulos',
+        refinement: { original: 'Páginas da Vida (contação de histórias nas escolas); Encontro com os Avós; artigos da Oficina das Narrativas; colaboração com a CRD.', enhanced: 'O Setor apoia a agenda de escolas para o Páginas da Vida (contatos, convites, roteiros, identidade visual), oferece um modelo de convite e logística para o Encontro com os Avós e coordena a publicação dos artigos/narrativas dentro do banco de conteúdo da Sede, em articulação com a CRD e o Setor de Discípulos, a quem o plano foi apresentado.', actions: 'Mapear escolas-alvo e agendar as primeiras sessões do Páginas da Vida; preparar convite-modelo do Encontro com os Avós; curadoria dos 3 primeiros artigos/narrativas.', days: 30 }
+      },
       {
         id: 'F2', type: 'f', name: 'Núcleo F2', planSlug: 'f2',
         dir: 'Lara, Ana Clara, Patrícia Soares, Marisa Celita', members: '12 condiscípulas',
@@ -2087,69 +2163,94 @@
 
     const heatmapData = {
       themes: ['Divina Arquitetura', 'Pens. Autoridade', 'Plano Trab. Pessoal', 'BSC (Base de estudo)', 'Consciência', 'Sistema Mental', 'Sistema Sensível', 'Deficiências/Virtudes', 'Leis Universais', 'Método Logosófico', 'Inventário de Bens'],
-      nucleos: ['F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'M1', 'M4', 'Virtual', 'Misto'],
+      nucleos: ['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'M1', 'M4', 'Virtual', 'Misto'],
       matrix: [
-        [2, 1, 1, 0, 1, 1, 1, 2, 1, 2, 2, 2], [0, 1, 1, 0, 2, 2, 1, 2, 2, 2, 2, 2], [1, 1, 2, 1, 2, 2, 2, 2, 1, 2, 2, 1],
-        [2, 2, 1, 0, 2, 2, 2, 2, 0, 0, 2, 2], [1, 2, 1, 0, 1, 1, 1, 2, 1, 1, 2, 1], [1, 1, 1, 0, 1, 2, 1, 2, 2, 1, 2, 2],
-        [1, 1, 1, 0, 2, 1, 1, 2, 1, 1, 2, 1], [1, 1, 1, 0, 1, 1, 2, 2, 1, 1, 2, 2], [0, 0, 2, 0, 0, 0, 1, 1, 2, 1, 1, 0],
-        [1, 1, 2, 0, 1, 2, 2, 1, 1, 1, 2, 2], [0, 0, 1, 0, 2, 0, 2, 1, 0, 2, 2, 0]
+        [2, 2, 1, 1, 0, 1, 1, 1, 2, 1, 2, 2, 2], [2, 0, 1, 1, 0, 2, 2, 1, 2, 2, 2, 2, 2], [2, 1, 1, 2, 1, 2, 2, 2, 2, 1, 2, 2, 1],
+        [2, 2, 2, 1, 0, 2, 2, 2, 2, 0, 0, 2, 2], [2, 1, 2, 1, 0, 1, 1, 1, 2, 1, 1, 2, 1], [1, 1, 1, 1, 0, 1, 2, 1, 2, 2, 1, 2, 2],
+        [1, 1, 1, 1, 0, 2, 1, 1, 2, 1, 1, 2, 1], [2, 1, 1, 1, 0, 1, 1, 2, 2, 1, 1, 2, 2], [2, 0, 0, 2, 0, 0, 0, 1, 1, 2, 1, 1, 0],
+        [1, 1, 1, 2, 0, 1, 2, 2, 1, 1, 1, 2, 2], [0, 0, 0, 1, 0, 2, 0, 2, 1, 0, 2, 2, 0]
       ]
     };
 
     const synergiesData = [
       {
-        num: '01', title: 'Clube do Livro / BSC', nucleos: [{ id: 'F4', t: 'f' }, { id: 'F8', t: 'f' }],
-        desc: 'Ambos planejam Clubes do Livro baseados no BSC. O F4 tem 3 encontros definidos (abr-jun). O F8 planeja como um dos seus projetos. Oportunidade de unificar datas, formato e materiais de divulgação.',
-        action: 'Unificar o calendário para ampliar o alcance e evitar sobreposição de datas'
+        num: '01', title: 'Clube do Livro / BSC', nucleos: [{ id: 'F4', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'SAE', t: 's' }],
+        desc: 'F4 e F8 planejam Clubes do Livro baseados no BSC — F4 com 3 encontros definidos (abr-jun), F8 como um dos seus projetos. O SAE (Mídias + Revisão + Expansão) assume a divulgação unificada, revisão editorial e integração ao calendário nacional da edição comemorativa.',
+        action: 'Calendário unificado, identidade visual única e apoio editorial pelo SAE'
       },
       {
-        num: '02', title: 'Central de Podcasts', nucleos: [{ id: 'F4', t: 'f' }, { id: 'F6', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'F9', t: 'f' }, { id: 'M1', t: 'm' }],
-        desc: '5 núcleos mencionam podcasts como ação de expansão. O Setor centraliza a produção, edição e distribuição sob uma linha editorial unificada da Sede.',
-        action: 'Fluxo de produção centralizado com calendário editorial unificado'
+        num: '02', title: 'Central de Podcasts', nucleos: [{ id: 'F4', t: 'f' }, { id: 'F6', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'F9', t: 'f' }, { id: 'M1', t: 'm' }, { id: 'SAE', t: 's' }],
+        desc: '5 núcleos mencionam podcasts como ação de expansão. A Comissão de Mídias (SAE) centraliza a produção, edição e distribuição sob linha editorial unificada; a Comissão de Performance acompanha alcance e métricas.',
+        action: 'Fluxo de produção centralizado pelo SAE com calendário editorial unificado'
       },
       {
-        num: '03', title: 'Banco de Artigos', nucleos: [{ id: 'F8', t: 'f' }, { id: 'M1', t: 'm' }, { id: 'Virtual', t: 'x' }],
-        desc: 'Três núcleos planejam elaborar artigos baseados em estudos individuais. Oportunidade de banco de conteúdo compartilhado para publicação digital e impressa.',
-        action: 'Curadoria e publicação unificada com identidade da Sede'
+        num: '03', title: 'Banco de Artigos', nucleos: [{ id: 'F8', t: 'f' }, { id: 'M1', t: 'm' }, { id: 'Virtual', t: 'x' }, { id: 'F1', t: 'f' }, { id: 'SAE', t: 's' }],
+        desc: 'Núcleos que planejam produzir artigos: F8, M1, Virtual e F1 (com os artigos/narrativas da Oficina das Narrativas). A Comissão de Revisão (SAE) zela pela fidelidade conceitual e a de Mídias pela publicação digital/impressa.',
+        action: 'Curadoria e publicação unificada pelo SAE com identidade da Sede'
       },
       {
-        num: '04', title: 'Logosofia nas Escolas', nucleos: [{ id: 'F9', t: 'f' }, { id: 'F3', t: 'f' }, { id: 'F5', t: 'f' }, { id: 'Virtual', t: 'x' }, { id: 'M1', t: 'm' }],
-        desc: 'F9: cartazes + QR Code. F3: capacitação professoras e Setor de Adolescentes. F5: quiosque no Colégio. Virtual: livros infantis em Águas Mornas. M1: atividade com Colégio.',
-        action: 'Programa integrado de presença logosófica nas escolas'
+        num: '04', title: 'Logosofia nas Escolas', nucleos: [{ id: 'F1', t: 'f' }, { id: 'F9', t: 'f' }, { id: 'F3', t: 'f' }, { id: 'F5', t: 'f' }, { id: 'Virtual', t: 'x' }, { id: 'M1', t: 'm' }, { id: 'SAE', t: 's' }],
+        desc: 'F1: Páginas da Vida — contação de histórias (6 componentes) e colaboração na CRD. F9: cartazes + QR Code. F3: capacitação para Escola e Família e Setor de Adolescentes. F5: quiosque no Colégio. Virtual: livros infantis em Águas Mornas. M1: atividade com Colégio. Coordenação geral pela Comissão de Expansão e Assessoramento Técnico (SAE).',
+        action: 'Programa integrado coordenado pelo SAE — presença logosófica nas escolas'
       },
       {
-        num: '05', title: 'Plano de Trabalho Pessoal', nucleos: [{ id: 'F4', t: 'f' }, { id: 'F6', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'F9', t: 'f' }, { id: 'Misto', t: 'x' }],
-        desc: 'Todos os 12 núcleos incluem PTP. Destaque: F4 como eixo central; F6, F9, Misto com acompanhamento a cada 2 meses; F8 com acompanhamento individual.',
-        action: 'Compartilhar experiências e orientações sobre o acompanhamento do PTP'
+        num: '05', title: 'Plano de Trabalho Pessoal', nucleos: [{ id: 'F1', t: 'f' }, { id: 'F4', t: 'f' }, { id: 'F6', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'F9', t: 'f' }, { id: 'Misto', t: 'x' }, { id: 'SD', t: 's' }, { id: 'SAE', t: 's' }],
+        desc: 'Todos os 13 núcleos incluem PTP. O Setor de Discípulos acompanha a formação e a coerência do processo; a Comissão de Assessoramento Docente (SAE) fornece modelos e orientações metodológicas. F1 tem o PTP como ponto de partida; F4 como eixo central; F6, F9, Misto com acompanhamento a cada 2 meses; F8 com acompanhamento individual.',
+        action: 'Encontro de troca coordenado por SD + SAE sobre o acompanhamento do PTP'
       },
       {
-        num: '06', title: 'Simpósio Pensamento Autoridade', nucleos: [{ id: 'M1', t: 'm' }, { id: 'F6', t: 'f' }, { id: 'F7', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'F9', t: 'f' }, { id: 'M4', t: 'm' }, { id: 'Misto', t: 'x' }],
-        desc: '7 dos 12 núcleos estudam pensamento autoridade. O M1 planeja um simpósio sobre o tema, que poderia ser aberto a integrantes de todos os núcleos.',
-        action: 'Oferecer o simpósio como atividade aberta a todos os núcleos da Sede'
+        num: '06', title: 'Simpósio Pensamento Autoridade', nucleos: [{ id: 'M1', t: 'm' }, { id: 'F1', t: 'f' }, { id: 'F6', t: 'f' }, { id: 'F7', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'F9', t: 'f' }, { id: 'M4', t: 'm' }, { id: 'Misto', t: 'x' }, { id: 'SAE', t: 's' }, { id: 'SD', t: 's' }],
+        desc: '8 dos 13 núcleos estudam pensamento-autoridade (F1 dedica-lhe o 4º encontro do 2º ciclo). O M1 propõe o simpósio; Comissões do Summit e de Assessoramento Docente (SAE) organizam o evento; Setor de Discípulos referenda o alcance formativo.',
+        action: 'Oferecer o simpósio como atividade aberta, organizada por SAE + SD'
       },
       {
-        num: '07', title: 'Inventário de Bens', nucleos: [{ id: 'F4', t: 'f' }, { id: 'F6', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'M4', t: 'm' }, { id: 'Virtual', t: 'x' }],
-        desc: '5 núcleos incluem inventário nos seus planos. Oportunidade de compartilhar orientações e experiências sobre como conduzir o inventário.',
-        action: 'Encontro para compartilhar experiências e orientações sobre o inventário'
+        num: '07', title: 'Inventário de Bens', nucleos: [{ id: 'F4', t: 'f' }, { id: 'F6', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'M4', t: 'm' }, { id: 'Virtual', t: 'x' }, { id: 'SD', t: 's' }, { id: 'SAE', t: 's' }],
+        desc: '5 núcleos incluem inventário nos seus planos. O Setor de Discípulos acompanha a experiência formativa; a Comissão de Assessoramento Docente (SAE) apoia com orientações e modelos práticos.',
+        action: 'Encontro coletivo coordenado por SD + SAE sobre o inventário'
       },
       {
-        num: '08', title: 'Campanha Nacional BSC', nucleos: [{ id: 'F4', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'F9', t: 'f' }],
-        desc: 'BSC aparece no ciclo de verão de praticamente todos os núcleos. É o livro central do Clube do Livro (F4, F8) e dos cartazes com QR Code (F9). Confirma aderência à campanha nacional.',
-        action: 'Fortalecer a difusão da edição comemorativa do BSC'
+        num: '08', title: 'Campanha Nacional BSC', nucleos: [{ id: 'F4', t: 'f' }, { id: 'F8', t: 'f' }, { id: 'F9', t: 'f' }, { id: 'F1', t: 'f' }, { id: 'SAE', t: 's' }],
+        desc: 'BSC aparece no ciclo de verão de praticamente todos os núcleos (inclusive F1 no Ciclo I com as tertúlias "Conselhos do Maestro"). É o livro central do Clube do Livro (F4, F8) e dos cartazes com QR Code (F9). Coordenação da difusão pela Comissão de Mídias e Expansão (SAE).',
+        action: 'Fortalecer a difusão da edição comemorativa do BSC, coordenada pelo SAE'
       },
     ];
 
 
     const recsData = [
-      { num: '01', title: 'Grupo de trabalho "Conteúdo para Difusão"', desc: 'Reunir F4, F6, F8, F9 e M1 sob a coordenação do Setor para podcasts, reels e artigos com identidade visual e editorial unificada. Fluxo de produção centralizado pelo Setor.', nucleos: 'F4 + F6 + F8 + F9 + M1' },
-      { num: '02', title: 'Programa "Logosofia nas Escolas"', desc: 'Articular F9 (cartazes com QR Code), F3 (Adolescentes e capacitação), F5 (quiosque), Virtual (livros infantis) e M1 (palestras) como um programa integrado de difusão nas escolas.', nucleos: 'F9 + F3 + F5 + Virtual + M1' },
-      { num: '03', title: 'Simpósio aberto sobre o Pensamento Autoridade', desc: 'Oferecer o simpósio previsto pelo M1 como atividade aberta a toda a Sede, considerando que 7 dos 12 núcleos estudam este tema.', nucleos: 'M1 → Todos' },
-      { num: '04', title: 'Clube do Livro com calendário unificado', desc: 'Unificar o formato e o calendário entre F4 e F8, ampliando o alcance e evitando sobreposição. O F4 já conta com 3 datas definidas (abr-jun).', nucleos: 'F4 + F8' },
-      { num: '05', title: 'Intercâmbio sobre as Leis Universais', desc: 'Propiciar um encontro de troca de experiências entre M1 e F4 (ciclo V), com grande afinidade temática e facilidade de coordenação.', nucleos: 'M1 + F4' },
+      { num: '01', title: 'Grupo de trabalho "Conteúdo para Difusão"', desc: 'Reunir F4, F6, F8, F9 e M1 sob a coordenação da Comissão de Mídias do SAE, com a Comissão de Revisão assegurando fidelidade editorial e a de Performance acompanhando alcance. Fluxo de produção centralizado.', nucleos: 'SAE · F4 + F6 + F8 + F9 + M1' },
+      { num: '02', title: 'Programa "Logosofia nas Escolas"', desc: 'Articular F1 (Páginas da Vida), F9 (cartazes com QR Code), F3 (Adolescentes e capacitação), F5 (quiosque), Virtual (livros infantis) e M1 (palestras) sob a coordenação da Comissão de Expansão e Assessoramento Técnico (SAE). Formação acompanhada pelo Setor de Discípulos.', nucleos: 'SAE · SD · F1 + F9 + F3 + F5 + Virtual + M1' },
+      { num: '03', title: 'Simpósio aberto sobre o Pensamento-Autoridade', desc: 'Oferecer o simpósio previsto pelo M1 como atividade aberta a toda a Sede (8 dos 13 núcleos estudam este tema). Organização pela Comissão do Summit e pela Comissão de Assessoramento Docente (SAE), com o Setor de Discípulos referendando o alcance formativo.', nucleos: 'SAE (Summit + Ass. Docente) · SD · M1 → Todos' },
+      { num: '04', title: 'Clube do Livro com calendário unificado', desc: 'Unificar formato e calendário entre F4 e F8 (F4 já conta com 3 datas em abr-jun). A Comissão de Mídias do SAE assume a divulgação; a Comissão de Revisão, o material editorial.', nucleos: 'SAE · F4 + F8' },
+      { num: '05', title: 'Intercâmbio sobre PTP e Inventário de Bens', desc: 'Encontro transversal coordenado pelo Setor de Discípulos e apoiado pela Comissão de Assessoramento Docente (SAE), reunindo experiências de F1 (plano individual), F4 (eixo central), F6, F8, F9, M4, Virtual e Misto.', nucleos: 'SD · SAE · Núcleos com PTP e Inventário' },
     ];
 
     // Network connection data with reasons
     const netEdges = [
+      // Setor de Amparo à Expansão — conecta-se a todos os núcleos que recebem orientação/apoio
+      { from: 'SAE', to: 'F1', reason: 'Comissão de Expansão apoia o Projeto Páginas da Vida e a articulação com a CRD' },
+      { from: 'SAE', to: 'F2', reason: 'Kit de materiais para apoiar o estudo intensivo' },
+      { from: 'SAE', to: 'F3', reason: 'Logística e orientações para o trabalho com jovens, intercâmbio com o Colégio' },
+      { from: 'SAE', to: 'F5', reason: 'Quiosque móvel padrão e comunicação centralizada dos cursos' },
+      { from: 'SAE', to: 'F7', reason: 'Modelo inspirado no F8 e orçamento inicial para difusão' },
+      { from: 'SAE', to: 'F8', reason: 'Produção centralizada de podcasts e Reels; acompanhamento de alcance' },
+      { from: 'SAE', to: 'F9', reason: 'Coordenação do podcast com F8; QR Code nas escolas' },
+      { from: 'SAE', to: 'M1', reason: 'Plataforma de gravação de podcasts, agenda de palestras, Simpósio' },
+      { from: 'SAE', to: 'M4', reason: 'Formulário para identificar componentes; encontros de estudo aprofundado' },
+      { from: 'SAE', to: 'Virtual', reason: 'Intermediação com Secretaria de Educação; materiais de divulgação' },
+      { from: 'SAE', to: 'F4', reason: 'Apoio editorial ao Clube do Livro' },
+      { from: 'SAE', to: 'SD', reason: 'Articulação entre setores — difusão + formação discipular' },
+      // Setor de Discípulos — conecta-se aos núcleos cujos planos recebe
+      { from: 'SD', to: 'F1', reason: 'Plano F-1/2026 apresentado ao Setor de Discípulos' },
+      { from: 'SD', to: 'F4', reason: 'Eixo PTP + Grandes Objetivos — formação discipular' },
+      { from: 'SD', to: 'F8', reason: 'Formação integral do discípulo (núcleo recém-promovido)' },
+      { from: 'SD', to: 'M1', reason: 'Estudo das Leis Universais e capacitação docente' },
+      { from: 'SD', to: 'F6', reason: 'Núcleo como corpo docente em embrião' },
+      // Conexões entre núcleos (anteriores)
+      { from: 'F1', to: 'F9', reason: 'Escolas, Pedagogia Logosófica, Páginas da Vida' },
+      { from: 'F1', to: 'F3', reason: 'Setor Infantil, capacitação para Escola e Família' },
+      { from: 'F1', to: 'Virtual', reason: 'Difusão em escolas (livros infantis + contação de histórias)' },
+      { from: 'F1', to: 'F2', reason: 'Recuperação da Divina Arquitetura' },
+      { from: 'F1', to: 'M4', reason: 'Consciência + Divina Arquitetura' },
       { from: 'F4', to: 'F8', reason: 'Clube do Livro BSC, Podcasts' },
       { from: 'F4', to: 'F6', reason: 'Podcasts, Pensamento Autoridade' },
       { from: 'F4', to: 'M1', reason: 'Leis Universais, Podcasts, Conteúdo Digital' },
@@ -2173,7 +2274,7 @@
     // =========================================================================
     // RENDER FUNCTIONS
     // =========================================================================
-    const typeLabels = { f: 'Feminino', m: 'Masculino', x: 'Misto' };
+    const typeLabels = { f: 'Feminino', m: 'Masculino', x: 'Misto', s: 'Setor' };
     const readinessLabels = { high: 'Pronto', medium: 'Em andamento', open: 'Em aberto' };
 
     function renderNucleos() {
@@ -2188,10 +2289,12 @@
         <div class="nucleo-meta">
           <span class="nucleo-readiness ${n.readiness}">${readinessLabels[n.readiness]}</span>
           ${ref ? '<span class="nucleo-readiness high" style="font-size:0.6rem">Orientação do Setor</span>' : ''}
+          ${n.submittedVia ? `<span class="nucleo-channel" title="Plano encaminhado via ${n.submittedVia}">via ${n.submittedVia}</span>` : ''}
           <span class="nucleo-toggle">Detalhar</span>
         </div>
       </summary>
       <div class="nucleo-body">
+        ${n.submittedVia ? `<div style="grid-column:1/-1"><span class="nucleo-field-label">Canal de apresentação do plano</span><div class="nucleo-field-value">Plano elaborado pela Equipe Diretora e encaminhado ao <strong>${n.submittedVia}</strong>, no âmbito do Planejamento 2026.</div></div>` : ''}
         <div><span class="nucleo-field-label">Direção</span><div class="nucleo-field-value">${n.dir}</div></div>
         <div><span class="nucleo-field-label">Componentes</span><div class="nucleo-field-value">${n.members}</div></div>
         <div><span class="nucleo-field-label">Áreas de estudo</span><div class="nucleo-field-value">${n.study}</div></div>
@@ -2334,10 +2437,11 @@
       const instruction = document.getElementById('net-instruction');
       let W, H, dpr, selectedId = null;
 
-      const typeColors = { f: '#D4941C', m: '#2A5580', x: '#40916C' };
+      const typeColors = { f: '#D4941C', m: '#2A5580', x: '#40916C', s: '#8A6FB0' };
       const nodes = nucleosData.map((n, i) => {
         const angle = (i / nucleosData.length) * Math.PI * 2 - Math.PI / 2;
-        return { id: n.id, type: n.type, theme: n.theme, angle, baseR: 0, x: 0, y: 0, r: n.id.length > 3 ? 28 : 24 };
+        const baseR = n.type === 's' ? 30 : (n.id.length > 3 ? 28 : 24);
+        return { id: n.id, type: n.type, theme: n.theme, angle, baseR: 0, x: 0, y: 0, r: baseR };
       });
 
       function layout() {
@@ -2361,9 +2465,9 @@
         hg.addColorStop(0, 'rgba(212,148,28,0.08)'); hg.addColorStop(1, 'rgba(212,148,28,0)');
         ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(cx, cy, 60, 0, Math.PI * 2); ctx.fill();
 
-        // Hub label
+        // Hub label — Sede de Florianópolis (conjunto dos 13 núcleos + 2 setores)
         ctx.font = '600 9px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillStyle = 'rgba(240,185,78,0.5)'; ctx.fillText('SETOR DE', cx, cy - 6); ctx.fillText('EXPANSÃO', cx, cy + 6);
+        ctx.fillStyle = 'rgba(240,185,78,0.5)'; ctx.fillText('SEDE', cx, cy - 6); ctx.fillText('FLORIPA', cx, cy + 6);
 
         const connIds = selectedId ? getConnections(selectedId).map(c => c.peer) : [];
 
